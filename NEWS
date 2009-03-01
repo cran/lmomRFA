@@ -1,0 +1,24 @@
+       **************************************************
+       *                                                *
+       *             lmomRFA package news               *
+       *                                                *
+       **************************************************
+
+
+Version 1.0     2009 Mar  1
+
+   o   First public release.  Functions included:
+         cluagg
+         cluinf
+         clukm
+         print.regtst
+         print.summary.regtst
+         reglmr
+         regsamlmu
+         regtst
+         summary.regtst
+
+       Data sets included:
+         Appalach
+         Cascades
+         Maxwind
