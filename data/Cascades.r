@@ -23,5 +23,6 @@ Cascades<-local({
   ')
   temp<-read.table(con,header=TRUE,colClasses=c('character',rep('numeric',6)))
   close(con)
-  temp
+  #as.regdata(temp) # not allowed -- can't assume that package is laoded
+  structure(temp, class=c("regdata",class(temp)))
 })

@@ -1,6 +1,6 @@
 \name{Appalach}
-\alias{Appalach}
 \docType{data}
+\alias{Appalach}
 \title{Data for streamflow gaging stations in Appalachia}
 \description{
 Site characteristics and sample \eqn{L}-moments of annual maximum streamflow

@@ -3,23 +3,23 @@
 \alias{print.regtst}
 \title{Test statistics for regional frequency analysis}
 \description{
-Computes discordancy, heterogeneity and goodness-of-fit statistics
+Computes discordancy, heterogeneity and goodness-of-fit measures
 for regional frequency analysis.
 These are the statistics \eqn{D_i}{D_i}, \eqn{H}, and \eqn{Z^{\rm DIST}}{Z^{DIST}}
 defined respectively in sections 3.2.3, 4.3.3, and 5.2.3 of
 Hosking and Wallis (1997).
 }
 \synopsis{
-regtst(regdat, nsim=1000)
-print.regtst<-function(x, ...)
+regtst(regdata, nsim=1000)
+print.regtst(x, ...)
 }
 \usage{
-regtst(regdat, nsim=1000)
+regtst(regdata, nsim=1000)
 }
 \arguments{
-  \item{regdat}{
-    Data frame containing the input data.
-    Each row should contain data for one site.
+  \item{regdata}{
+    Object of class \code{\link{regdata}} containing the input data.
+    It should be a data frame, each of whose rows contains data for one site.
     The first seven columns should contain respectively
     the site name, record length and \eqn{L}-moments
     and \eqn{L}-moment ratios, in the order
@@ -33,12 +33,12 @@ regtst(regdat, nsim=1000)
     the \eqn{L}-CV \eqn{t}, not the \eqn{L}-scale \eqn{\ell_2}{l_2}!
 
     Function \code{regsamlmu}, with default settings
-    of its arguments, produces a data frame with this form.}
+    of its arguments, returns an object of class \code{regdata}.}
   \item{nsim}{
     Number of simulations to use in the calculation of the
     heterogeneity and goodness-of-fit measures.
 
-    If less than 2, only the discordancy measures will be calculated.
+    If less than 2, only the discordancy measure will be calculated.
     }
 }
 \details{
@@ -84,7 +84,7 @@ Calculation of heterogeneity and goodness-of-fit measures
 involves the sampling variability of \eqn{L}-moment ratios
 in a homogeneous region whose record lengths and
 average \eqn{L}-moment ratios match those of the data.
-The sampling variablility is estimated by Monte Carlo simulation
+The sampling variability is estimated by Monte Carlo simulation
 using \code{nsim} replications of the region.
 Results will vary between invocations of \code{regtst}
 with different seeds for the random-number generator.
@@ -141,7 +141,12 @@ An object of class \code{"regtst"}, which is a list with elements as follows.
   Cambridge University Press.
 }
 \author{J. R. M. Hosking \email{hosking@watson.ibm.com}}
-%\note{}
+\note{
+  Data frame \code{regdata} may have only six columns,
+  i.e. the fifth \eqn{L}-moment ratio \eqn{t_5} may be omitted.
+  In this case the return value will contain missing values for
+  \code{rmom[5]} and the elements of \code{para$wak}.
+}
 \seealso{
 \code{summary.regtst} for summaries.
 }

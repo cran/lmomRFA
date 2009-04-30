@@ -9,8 +9,8 @@ cluagg(x, method="ward")
 }
 \arguments{
   \item{x}{
-    A numeric matrix (or a data frame with all numeric
-    columns, which will be coerced to a matrix).  Contains the data:
+    A numeric matrix (or a data frame with all numeric columns,
+    which will be coerced to a matrix).  Contains the data:
     each row should contain the attributes for a single point.}
   \item{method}{Clustering method. Any method valid for
     \code{\link{hclust}} may be used.}
@@ -60,4 +60,4 @@ att[,1] <- att[,1] * 3
 # Details of the clustering with 7 clusters
 cluinf(cl,7)
 }
-\keyword{misc}
+\keyword{cluster}

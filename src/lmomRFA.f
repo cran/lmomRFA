@@ -52,10 +52,7 @@ C*  package, version 3.04.  See IBM Research Report RC20525, 'Fortran  *
 C*  routines for use with the method of L-moments, version 3', and its *
 C*  updates.                                                           *
 C*                                                                     *
-C*  Version 0.5    June 2007                                           *
-C*                                                                     *
-C*  Version 0.61   July 2008                                           *
-C*  * Declare DERF as EXTERNAL                                         *
+C*  Version 1.0    March 2009                                          *
 C*                                                                     *
 C***********************************************************************
 C
@@ -1882,16 +1879,18 @@ C
       QUAKAP=U+A/G
       RETURN
 C
- 1000 WRITE(6,7000)
+ 1000 CONTINUE
+C     WRITE(6,7000)
       QUAKAP=ZERO
       RETURN
- 1010 WRITE(6,7010)
+ 1010 CONTINUE
+C      WRITE(6,7010)
       QUAKAP=ZERO
       RETURN
 C
- 7000 FORMAT(' *** ERROR *** ROUTINE QUAKAP : PARAMETERS INVALID')
- 7010 FORMAT(' *** ERROR *** ROUTINE QUAKAP :',
-     *  ' ARGUMENT OF FUNCTION INVALID')
+C7000 FORMAT(' *** ERROR *** ROUTINE QUAKAP : PARAMETERS INVALID')
+C7010 FORMAT(' *** ERROR *** ROUTINE QUAKAP :',
+C    *  ' ARGUMENT OF FUNCTION INVALID')
       END
 C===================================================== SAMLMU.FOR
       SUBROUTINE SAMLMU(X,N,XMOM,NMOM,IFAIL)
@@ -2136,11 +2135,12 @@ C
       DIGAMD=DIGAMD-SUM
       RETURN
 C
- 1000 WRITE(6,7000)X
+ 1000 CONTINUE
+C     WRITE(6,7000)X
       RETURN
 C
- 7000 FORMAT(' *** ERROR *** ROUTINE DIGAMD :',
-     *  ' ARGUMENT OUT OF RANGE :',D24.16)
+C7000 FORMAT(' *** ERROR *** ROUTINE DIGAMD :',
+C    *  ' ARGUMENT OUT OF RANGE :',D24.16)
       END
 C===================================================== DLGAMA.FOR
       DOUBLE PRECISION FUNCTION DLGAMA(X)
@@ -2220,11 +2220,12 @@ C
    70 DLGAMA=SUM1+SUM2
       RETURN
 C
- 1000 WRITE(6,7000)X
+ 1000 CONTINUE
+C     WRITE(6,7000)X
       RETURN
 C
- 7000 FORMAT(' *** ERROR *** ROUTINE DLGAMA :',
-     *  ' ARGUMENT OUT OF RANGE :',D24.16)
+C7000 FORMAT(' *** ERROR *** ROUTINE DLGAMA :',
+C    *  ' ARGUMENT OUT OF RANGE :',D24.16)
       END
 C===================================================== SORT.FOR
       SUBROUTINE SORT(X,N)

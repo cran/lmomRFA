@@ -2,8 +2,8 @@
 \alias{regsamlmu}
 \title{Sample L-moments of multiple data sets}
 \description{
-Computes the \dQuote{unbiased} sample \eqn{L}-moments and \eqn{L}-moment ratios of
-multiple sets of data stored in a list or matrix.
+Computes the \dQuote{unbiased} sample \eqn{L}-moments and \eqn{L}-moment
+ratios of multiple sets of data stored in a list or matrix.
 Following the paradigm of regional frequency analysis,
 we regard the data sets as coming from different measurement sites.
 }
@@ -12,9 +12,9 @@ regsamlmu(x, nmom = 5, sort.data = TRUE, lcv = TRUE)
 }
 \arguments{
   \item{x}{A list of numeric vectors, or a numeric matrix.}
-  \item{nmom}{Number of \eqn{L}-moments to be found.}
+  \item{nmom}{Number of \eqn{L}-moments to be computed.}
   \item{sort.data}{Whether each data set should be sorted.}
-  \item{lcv}{
+  \item{lcv}{Logical.
     If \code{TRUE}, the second \eqn{L}-moment will be expressed
     as a fraction of the mean, i.e. the computed value will be
     the sample \eqn{L}-CV \eqn{t=\ell_2/\ell_1}{t=l_2/l_1}.
@@ -24,13 +24,14 @@ regsamlmu(x, nmom = 5, sort.data = TRUE, lcv = TRUE)
 \details{
   Sample \eqn{L}-moments are computed for each data set.
   The calculations use \code{samlmu} internally.
-  If \code{x} is a list, each list element contains data for one site
-  and the names of the list elements are the site names.
-  If \code{x} is a matrix, each column contains data for one site
-  and the column names are the site names.
+  If \code{x} is a list, each list element should contain data for one site
+  and the names of the list elements should be the site names.
+  If \code{x} is a matrix, each column should contain data for one site
+  and the column names should be the site names.
 }
 \value{
-  A data frame with columns \code{"name"} and \code{"n"},
+  An object of class \code{\link{regdata}}.
+  It is a data frame with columns \code{"name"} and \code{"n"},
   containing respectively the site names and the
   number of non-missing data values at each site,
   and further columns containing the \eqn{L}-moments and \eqn{L}-moment ratios,

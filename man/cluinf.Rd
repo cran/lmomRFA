@@ -9,7 +9,7 @@ which cluster a given data point belongs to, and which data points belong
 to a given cluster.
 }
 \usage{
-cluinf(merge,nclust)
+cluinf(merge, nclust)
 }
 \arguments{
   \item{merge}{Matrix with 2 columns. The \eqn{i}th row contains
@@ -51,4 +51,4 @@ att[,1] <- att[,1] * 3
 # Details of the clustering with 7 clusters
 cluinf(cl, 7)
 }
-\keyword{misc}
+\keyword{cluster}

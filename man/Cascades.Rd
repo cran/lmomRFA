@@ -1,6 +1,6 @@
 \name{Cascades}
-\alias{Cascades}
 \docType{data}
+\alias{Cascades}
 \title{L-moments of annual precipitation totals}
 \description{
 \eqn{L}-moments of annual precipitation totals for the
@@ -8,9 +8,10 @@
 }
 \usage{data(Cascades)}
 \format{
-  A data frame with 19 observations on the following 7 variables:
+  An object of class \code{\link{regdata}}.
+  It is a  data frame with 19 observations on the following 7 variables:
   \describe{
-    \item{\code{name}}{Character vector: site ID.}
+    \item{\code{name}}{Character vector: site identifier.}
     \item{\code{n}}{Numeric vector: record length.}
     \item{\code{mean}}{Numeric vector: sample mean.}
     \item{\code{t}}{Numeric vector: sample \eqn{L}-CV.}

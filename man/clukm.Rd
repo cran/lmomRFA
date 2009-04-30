@@ -70,4 +70,4 @@ ord <- order(sapply(bb, "[", 1))
 # and Wallis (1997), Table 9.5.
 do.call(rbind, bb[ord])
 }
-\keyword{misc}
+\keyword{cluster}

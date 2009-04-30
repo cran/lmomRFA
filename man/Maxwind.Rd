@@ -1,6 +1,6 @@
 \name{Maxwind}
-\alias{Maxwind}
 \docType{data}
+\alias{Maxwind}
 \title{Maximum wind speeds}
 \description{
 Annual maximum wind speeds at 12 sites in the southeast U.S.

@@ -7,8 +7,9 @@
 }
 \usage{
 \method{summary}{regtst}(object,
-  prob=c(0.01,0.02,0.05,0.1,0.2,0.5,0.8,0.9,0.95,0.98,0.99,0.999),
-  conf=0.90, decimals=c(4,4,2,3), ...)
+  prob = c(0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 0.8, 0.9, 0.95, 0.98,
+    0.99, 0.999),
+  conf = 0.90, decimals = c(4, 4, 2, 3), ...)
 
 \method{print}{summary.regtst}(x, decimals, ...)
 }
