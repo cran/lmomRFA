@@ -79,7 +79,7 @@ as.regdata<-function(x, warn.names=TRUE) {
 # Check names of columns of 'x'
   nx<-names(x)
   if (identical(nx,paste("V",seq(along=x),sep="")))
-    names(x)<-c("name","n","mean","t",paste("t_",seq(4,length(x)),sep=""))
+    names(x)<-c("name","n","mean","t",paste("t_",seq(3,length(x)-2),sep=""))
   else if (warn.names) {
     mygrep<-function(x,y) (regexpr(x,y,ignore.case=TRUE)>0)
     if (!mygrep("^(id|name|site|site[[:punct:]]?id|site[[:punct:]]?name)s?$",nx[1]))

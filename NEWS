@@ -5,6 +5,14 @@
        **************************************************
 
 
+Version 2.1     2009 Jul 10
+
+   o   evplot.rfd() is now exported from the package namespace.
+
+   o   Fixed: as.regdata() would give an error when its argument 'x' was a
+       data frame with default column names ("V1, "V2", etc.).
+
+
 Version 2.0     2009 Apr 30
 
    o  This version of the package aims to enable straightforward computation

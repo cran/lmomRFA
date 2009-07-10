@@ -48,5 +48,7 @@ levels of anthropogenic greenhouse gases?
 }
 \examples{
 data(Cascades)
+Cascades        # L-moment ratios, etc., for the Cascades data
+lmrd(Cascades)  # L-moment ratio diagram for the Cascades data
 }
 \keyword{datasets}
