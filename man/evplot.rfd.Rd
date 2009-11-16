@@ -11,9 +11,9 @@ The graph is an \dQuote{extreme-value plot}, i.e. the horizontal axis
 is the quantile of an extreme-value type I (Gumbel) distribution,
 and the quantile function of that distribution would plot as a straight line.
 }
-%\synopsis{}
 \usage{
-\method{evplot}{rfd}(y, ybounds, npoints=101, plim, xlim=c(-2,5), ylim,
+\method{evplot}{rfd}(y, ybounds, npoints=101, add=FALSE, plim,
+  xlim=c(-2,5), ylim,
   xlab=expression("Reduced variate,  " * -log(-log(italic(F)))),
   ylab="Quantile", rp.axis=TRUE, type="l", lty=c(1,2), col=c(1,1),
   ...)
@@ -27,6 +27,7 @@ and the quantile function of that distribution would plot as a straight line.
         regional frequency distribution specified by \code{y}.}
   \item{npoints}{Number of points to use in drawing the quantile function.
         The points are equally spaced along the x axis.}
+  \item{add}{Logical: if \code{TRUE}, add to existing plot.}
   \item{plim}{X axis limits, specified as probabilities.}
   \item{xlim}{X axis limits, specified as values of the Gumbel reduced variate
         \eqn{-\log(-\log(F))}{-log(-log(F))}, where \eqn{F}{F} is the

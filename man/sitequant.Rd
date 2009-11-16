@@ -7,7 +7,6 @@ Quantiles and quantile functions for individual sites in a region.
 \code{sitequant} computes quantiles directly;
 \code{siteqfunc} returns a function that will compute quantiles.
 }
-%\synopsis{}
 \usage{
 sitequant(f, rfd, sitenames, index, drop = TRUE)
 

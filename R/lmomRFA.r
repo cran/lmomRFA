@@ -147,8 +147,8 @@ regtst<-function(regdata, nsim=1000){
 
   regdata<-as.regdata(regdata)
 
-  if (ncol(regdata)<7)
-    stop("'regdata' must be a data frame with at least 7 columns")
+  if (ncol(regdata)<6)
+    stop("'regdata' must be a data frame with at least 6 columns")
 
   nsites<-nrow(regdata)
   len<-regdata[,2]
@@ -218,7 +218,6 @@ regtst<-function(regdata, nsim=1000){
     t4fit=fort$t4fit,
     Z=fort$z)
 
-  names(out$data)<-c("name","n","mean","t","t_3","t_4","t_5")
   names(out$rmom)<-c("mean","t","t_3","t_4","t_5")
   if (nsim>1) {
     names(out$rpara)<-lmom:::lmom.dist$kap$parnames
@@ -801,7 +800,7 @@ regsimq <- function(qfunc, para, cor=0, index=NULL, nrec, nrep=10000,
     ou<-outer(sim.rgc[iq,,drop=FALSE],true.asgc[iq,,drop=FALSE],"/")
                                              # - matrix of ratios qhat^{[m]}(F)/q_i(F) (F fixed, i varying)
     rr<-mean(sqrt(colMeans((ou-1)^2)))       # - average, across sites, of rel. RMSE of qhat as estimator of q_i
-    qq<-quantile(ou,probs=boundprob,type=6)               # - quantiles of the ratio qhat/q_i
+    qq<-quantile(ou,probs=boundprob,type=6)  # - quantiles of the ratio qhat/q_i
     c(rr,qq)
   })
   rel.RMSE<-sa[1,]
@@ -863,7 +862,7 @@ regquantbounds<-function(relbounds, rfd) {
    RMSE=rgc*relbounds$relbounds.rgc$rel.RMSE,
    bound=rgc/rev(relbounds$relbounds.rgc[-(1:2)]))
   boundprob<-rev(1-relbounds$boundprob)
-  colnames(out)[-(1:3)]<-paste("bound",boundprob)
+  colnames(out)[-(1:3)]<-paste("bound",boundprob,sep=".")
   rownames(out)<-NULL
   attr(out,"boundprob")<-boundprob
   class(out)<-c("rfdbounds",class(out))
@@ -891,7 +890,7 @@ sitequantbounds<-function(relbounds, rfd, sitenames, index, seindex, drop=TRUE) 
         f=relbounds$f, Qhat=Qhat,
         RMSE=Qhat*relbounds$relbounds.by.site[[isite]]$rel.RMSE,
         bound=Qhat/rev(relbounds$relbounds.by.site[[isite]][-(1:2)]))
-      colnames(out.isite)[-(1:3)]<-paste("bound",boundprob)
+      colnames(out.isite)[-(1:3)]<-paste("bound",boundprob,sep=".")
       rownames(out.isite)<-NULL
       attr(out.isite,"boundprob")<-boundprob
       class(out.isite)<-c("rfdbounds",class(out.isite))
@@ -938,7 +937,8 @@ sitequantbounds<-function(relbounds, rfd, sitenames, index, seindex, drop=TRUE) 
   return(out)
 }
 
-evplot.rfd<-function(y, ybounds, npoints=101, plim, xlim=c(-2,5), ylim,
+evplot.rfd<-function(y, ybounds, npoints=101, add=FALSE,
+  plim, xlim=c(-2,5), ylim,
   xlab=expression("Reduced variate,  " * -log(-log(italic(F)))),
   ylab="Quantile", rp.axis=TRUE, type="l", lty=c(1,2), col=c(1,1), ...) {
 ## evplot() method for an object of class "rfd"
@@ -949,9 +949,12 @@ evplot.rfd<-function(y, ybounds, npoints=101, plim, xlim=c(-2,5), ylim,
     ybounds<-NULL
   }
   if (is.null(ybounds)) {
-    evplot(, qfunc=y$qfunc, npoints=npoints, plim=plim, xlim=xlim, ylim=ylim,
-      type=type, xlab=xlab, ylab=ylab, rp.axis=rp.axis,
-      lty=lty[1], col=col[1], ...)
+    if (add)
+      evdistq(y$qfunc, npoints=npoints, type=type, lty=lty[1], col=col[1], ...)
+    else
+      evplot(, qfunc=y$qfunc, npoints=npoints, plim=plim, xlim=xlim, ylim=ylim,
+        type=type, xlab=xlab, ylab=ylab, rp.axis=rp.axis,
+        lty=lty[1], col=col[1], ...)
     return(invisible())
   }
   #
@@ -967,9 +970,12 @@ evplot.rfd<-function(y, ybounds, npoints=101, plim, xlim=c(-2,5), ylim,
     ylim<-range(dat[is.finite(dat)])
   }
   #
-  evplot(, qfunc=my.qfunc, npoints=npoints, plim=plim, xlim=xlim, ylim=ylim,
-    type=type, xlab=xlab, ylab=ylab, rp.axis=rp.axis,
-    lty=lty[1], col=col[1], ...)
+  if (add)
+    evdistq(y$qfunc, npoints=npoints, type=type, lty=lty[1], col=col[1], ...)
+  else
+    evplot(, qfunc=my.qfunc, npoints=npoints, plim=plim, xlim=xlim, ylim=ylim,
+      type=type, xlab=xlab, ylab=ylab, rp.axis=rp.axis,
+      lty=lty[1], col=col[1], ...)
   matlines(-log(-log(ybounds[[1]])),ybounds[-(1:3)], type=type,
     lty = if (length(lty)>1) lty[-1] else lty,
     col = if (length(col)>1) col[-1] else col)  # ',...)' ?

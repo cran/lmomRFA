@@ -7,9 +7,9 @@ Computes, using Monte Carlo simulation, relative error bounds
 for estimated quantiles of a regional frequency distribution
 fitted by \code{regfit}.
 }
-\synopsis{
-print.regsimq(x, ...)
-}
+%\synopsis{
+%print.regsimq(x, ...)
+%}
 \usage{
 regsimq(qfunc, para, cor = 0, index = NULL, nrec, nrep = 10000,
         fit = "gev", f = c(0.01, 0.1, 0.5, 0.9, 0.99, 0.999),

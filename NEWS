@@ -5,6 +5,20 @@
        **************************************************
 
 
+Version 2.2     2009 Nov 16
+
+   o   evplot.rfd() gains an argument 'add'.
+
+   o   In the return values of regquantbounds() and sitequantbounds(),
+       column names of "bound" items no longer contain an embedded space:
+       their format is "bound.0.05" etc.
+
+   o   The data frame supplied as argument 'regdata' of regtst() now need have
+       only 6 rather than 7 columns; if it does, some output quantities will
+       not be calculated.  (Originally claimed as a feature of Version 2.0,
+       but not actually implemented therein.)
+
+
 Version 2.1     2009 Jul 10
 
    o   evplot.rfd() is now exported from the package namespace.
@@ -64,10 +78,6 @@ Version 2.0     2009 Apr 30
 
    o   Argument 'regdat' of regtst() is renamed 'regdata', and is expected
        to be of class "regdata" (after coercion if necessary).
-
-   o   The data frame supplied as argument 'regdata' of regtst() now need have
-       only 6 rather than 7 columns; if it does, some output quantities will
-       not be calculated.
 
    o   reglmr() is deprecated; regavlmom() is the recommended replacement.
 

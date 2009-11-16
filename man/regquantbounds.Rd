@@ -8,7 +8,6 @@ the root mean square error (RMSE) and error bounds for quantiles
 either of the regional growth curve (\code{regquantbounds})
 or of distributions at individual sites (\code{sitequantbounds}).
 }
-%\synopsis{}
 \usage{
 regquantbounds(relbounds, rfd)
 

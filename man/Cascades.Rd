@@ -23,7 +23,7 @@
 \details{
 The data are summary statistics of annual precipitation totals
 at 19 sites in the northwest U.S.,
-the \dQuote{North Cascades} region of Plantico et al.\ (1990).
+the \dQuote{North Cascades} region of Plantico et al. (1990).
 The precipitation data were obtained from the Historical Climatology Network
 (Karl et al., 1990).
 }

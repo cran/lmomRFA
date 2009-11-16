@@ -10,9 +10,9 @@ which contains the specification of the regional frequency distribution:
 the quantile function, parameters of the regional growth curve,
 and the index-flood values (site-specific scale factors) for each site.
 }
-\synopsis{
-print.rfd(x, ...)
-}
+%\synopsis{
+%print.rfd(x, ...)
+%}
 \usage{
 regfit(regdata, dist)
 }

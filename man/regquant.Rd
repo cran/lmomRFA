@@ -8,7 +8,6 @@ i.e., values of the regional growth curve.
 
 \code{regqfunc} returns a function that will compute the quantiles.
 }
-%\synopsis{}
 \usage{
 regquant(f, rfd)
 

@@ -9,10 +9,9 @@ These are the statistics \eqn{D_i}{D_i}, \eqn{H}, and \eqn{Z^{\rm DIST}}{Z^{DIST
 defined respectively in sections 3.2.3, 4.3.3, and 5.2.3 of
 Hosking and Wallis (1997).
 }
-\synopsis{
-regtst(regdata, nsim=1000)
-print.regtst(x, ...)
-}
+%\synopsis{
+%print.regtst(x, ...)
+%}
 \usage{
 regtst(regdata, nsim=1000)
 }
@@ -33,7 +32,7 @@ regtst(regdata, nsim=1000)
     the \eqn{L}-CV \eqn{t}, not the \eqn{L}-scale \eqn{\ell_2}{l_2}!
 
     Function \code{regsamlmu}, with default settings
-    of its arguments, returns an object of class \code{regdata}.}
+    of its arguments, returns an object of class \code{"regdata"}.}
   \item{nsim}{
     Number of simulations to use in the calculation of the
     heterogeneity and goodness-of-fit measures.
@@ -92,7 +91,8 @@ with different seeds for the random-number generator.
 \value{
 An object of class \code{"regtst"}, which is a list with elements as follows.
 
-\item{data}{The input data frame \code{regdat}.}
+\item{data}{The input data, i.e. data frame \code{regdata}
+  after coercion to class \code{"regdata"} if necessary.}
 \item{nsim}{Number of simulations, i.e. the argument \code{nsim}.}
 \item{D}{Vector containing the discordancy measures for each site.}
 \item{Dcrit}{

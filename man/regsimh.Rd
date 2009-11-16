@@ -8,9 +8,9 @@ heterogeneity and goodness-of-fit measures for regional frequency analysis.
 These are the statistics \eqn{H} and \eqn{Z^{\rm DIST}}{Z^{DIST}}
 defined respectively in sections 4.3.3 and 5.2.3 of Hosking and Wallis (1997).
 }
-\synopsis{
-print.regsimh(x, ...)
-}
+%\synopsis{
+%print.regsimh(x, ...)
+%}
 \usage{
 regsimh(qfunc, para, cor = 0, nrec, nrep = 500, nsim = 500)
 }
