@@ -5,6 +5,20 @@
        **************************************************
 
 
+Version 2.3     2010 Aug 21
+
+   o   regsimq() no longer gives an error when asked to compute the estimation
+       accuracy for an infinite quantile; instead it returns NaN values in the
+       relevant places (i.e., elements corresponding to infinite quantiles in
+       the "rel.RMSE" and "rel.bound..." variables of the data frames in
+       components "relbounds.rgc" and "relbounds.by.site").
+
+   o   Fixed: when a data frame with only 6 columns was supplied as argument
+       'regdata' of regtst(), and summary() was called on the resulting object
+       of class "regtst", an error would occur ("Error in quawak ... missing
+       values in parameter vector").
+
+
 Version 2.2     2009 Nov 16
 
    o   evplot.rfd() gains an argument 'add'.

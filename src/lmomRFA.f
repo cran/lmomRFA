@@ -42,7 +42,7 @@ C*                                                                     *
 C*  Fortran code written for R package "lmomRFA"                       *
 C*                                                                     *
 C*  J. R. M. Hosking                                                   *
-C*  IBM Research DIvision                                              *
+C*  IBM Research Division                                              *
 C*  T. J. Watson Research Center                                       *
 C*  Yorktown Heights                                                   *
 C*  New York 10598, U.S.A.                                             *

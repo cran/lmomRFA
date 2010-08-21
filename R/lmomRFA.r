@@ -255,14 +255,14 @@ summary.regtst<-function(object,
   if (is.null(object$para)) {
     out<-c(object,list(prob=prob,quant=NULL,decimals=decimals))
   } else {
-    quant<-matrix(nrow=6,ncol=length(prob))
+    quant<-matrix(NA_real_,nrow=6,ncol=length(prob))
     if (ncol(quant)>0) {
       quant[1,]<-quaglo(prob,object$para$glo)
       quant[2,]<-quagev(prob,object$para$gev)
       quant[3,]<-quagno(prob,object$para$gno)
       quant[4,]<-quape3(prob,object$para$pe3)
       quant[5,]<-quagpa(prob,object$para$gpa)
-      quant[6,]<-quawak(prob,object$para$wak)
+      if (!is.na(object$para$wak[1])) quant[6,]<-quawak(prob,object$para$wak)
       colnames(quant)<-format(prob,scientific=FALSE)
     }
     rownames(quant)<-names(object$para)
@@ -285,7 +285,7 @@ print.summary.regtst<-function(x, decimals, ...) {
   dquant<-decimals[4]
 
   dat<-x$data
-  dat[,3:7]<-format(dat[,3:7],digits=1,nsmall=dlmom,scientific=FALSE)
+  dat[,-(1:2)]<-format(dat[,-(1:2)],digits=1,nsmall=dlmom,scientific=FALSE)
   nsites<-length(x$D)
   stars<-rep("  ",nsites)
   substring(stars,1,1)[x$D>=x$Dcrit[1] ]<-"*"
@@ -595,7 +595,7 @@ print.regsimh<-function(x,...) {
   print(round(x$means[4:8], 2))
 }
 
-regsimq <- function(qfunc, para, cor=0, index=NULL, nrec, nrep=10000,
+regsimq<-function(qfunc, para, cor=0, index=NULL, nrec, nrep=10000,
   fit="gev", f=c(0.01,0.1,0.5,0.9,0.99,0.999), boundprob=c(0.05,0.95),
   save=TRUE) {
 ## Simulations for error bounds of regional growth curve
@@ -793,6 +793,12 @@ regsimq <- function(qfunc, para, cor=0, index=NULL, nrec, nrep=10000,
 
   true.asgc<-trueQ/matrix(index,nrow(trueQ),ncol(trueQ),byrow=TRUE)
 
+  # Modified quantile(): if any x value is missing (NA or NaN), set all quantiles equal to NaN.
+  # Avoids error when computing estimation accuracy for an infinite quantile
+  # (e.g. in regsimq() when user specifies f=0 and qfunc has no lower bound).
+  my.quantile<-function(x,probs,...)
+    if (any(is.na(x))) rep(NaN,length(probs)) else quantile(x,probs,type=6)
+
   # Compute relative RMSE and quantiles of estimated rgc from
   # simulations as an estimator of the at-site growth curve
 
@@ -800,7 +806,7 @@ regsimq <- function(qfunc, para, cor=0, index=NULL, nrec, nrep=10000,
     ou<-outer(sim.rgc[iq,,drop=FALSE],true.asgc[iq,,drop=FALSE],"/")
                                              # - matrix of ratios qhat^{[m]}(F)/q_i(F) (F fixed, i varying)
     rr<-mean(sqrt(colMeans((ou-1)^2)))       # - average, across sites, of rel. RMSE of qhat as estimator of q_i
-    qq<-quantile(ou,probs=boundprob,type=6)  # - quantiles of the ratio qhat/q_i
+    qq<-my.quantile(ou,probs=boundprob)      # - quantiles of the ratio qhat/q_i
     c(rr,qq)
   })
   rel.RMSE<-sa[1,]
@@ -817,7 +823,7 @@ regsimq <- function(qfunc, para, cor=0, index=NULL, nrec, nrep=10000,
     meanratio<-sim.sitemeans[isite,]                # Ratio of sample to population mean (sample was generated from distribution with mean 1, so no need to divide by index[isite])
     ratio<-rgcratio*meanratio                       # Matrix of ratios Qhat_i^{[m]}(F)/q_i(F) (F varying, i fixed)
     rel.RMSE<-sqrt(rowMeans((ratio-1)^2))
-    rel.bounds<-t(apply(ratio,1,quantile,probs=boundprob,type=6))
+    rel.bounds<-t(apply(ratio,1,my.quantile,probs=boundprob))
     dimnames(rel.bounds)[[2]]<-boundprob
     data.frame(f=f,rel.RMSE=rel.RMSE,rel.bound=rel.bounds)
   })
@@ -911,6 +917,13 @@ sitequantbounds<-function(relbounds, rfd, sitenames, index, seindex, drop=TRUE) 
     }
     nrep<-ncol(relbounds$sim.rgcratio)
     nq  <-nrow(relbounds$sim.rgcratio)
+#
+    # Modified quantile(): if any x value is missing (NA or NaN), set all quantiles equal to NaN.
+    # Avoids error when computing estimation accuracy for an infinite quantile
+    # (e.g. in regsimq() when user specifies f=0 and qfunc has no lower bound).
+    my.quantile<-function(x,probs,...)
+      if (any(is.na(x))) rep(NaN,length(probs)) else quantile(x,probs,type=6)
+#
     out<-lapply(seq_along(index),
       function(isite) {
         Qhat<-index[isite]*rgc
@@ -921,7 +934,7 @@ sitequantbounds<-function(relbounds, rfd, sitenames, index, seindex, drop=TRUE) 
         # Qhat_i(F)/Q_i(F) for this site
         Qratio<-relbounds$sim.rgcratio*rep(meanratio,each=nq)
         rel.RMSE<-sqrt(rowMeans((Qratio-1)^2))
-        rel.bounds<-t(apply(1/Qratio,1,quantile,probs=boundprob,type=6))
+        rel.bounds<-t(apply(1/Qratio,1,my.quantile,probs=boundprob))
         dimnames(rel.bounds)[[2]]<-boundprob
         out.isite<-data.frame(row.names=NULL,
           f=relbounds$f, Qhat=Qhat,
