@@ -61,7 +61,7 @@ whose values are the index flood values at each site, from \code{regdata[[3]]},
 and whose names are the site names, from \code{regdata[[1]]}.}
 }
 %\references{}
-\author{J. R. M. Hosking \email{hosking@watson.ibm.com}}
+\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
 %\note{}
 %\seealso{}
 \examples{

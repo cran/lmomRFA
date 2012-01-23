@@ -290,6 +290,10 @@ C
       SUM3=ZERO
       SUM4=ZERO
 C
+C     Check for user interrupt from R
+C
+      CALL RCHKUSR()
+C
 C         START OF LOOP OVER SITES
 C
       DO 200 I=1,NSITES

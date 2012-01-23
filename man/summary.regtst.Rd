@@ -67,7 +67,7 @@ with elements as for class \code{"regtst"}, plus the following elements:
   Fortran routines for use with the method of \eqn{L}-moments, Version 3.
   Research Report RC20525, IBM Research Division, Yorktown Heights, N.Y.
 }
-\author{J. R. M. Hosking \email{hosking@watson.ibm.com}}
+\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
 %\note{}
 \seealso{\code{\link{regtst}}}
 \examples{
@@ -75,7 +75,6 @@ with elements as for class \code{"regtst"}, plus the following elements:
 # the file 'cascades.out' in the LMOMENTS Fortran package at
 # http://lib.stat.cmu.edu/lmoments/general (results will not
 # be identical, because random-number generators are different).
-data(Cascades)
 summary(regtst(Cascades, nsim=500))
 }
 \keyword{misc}

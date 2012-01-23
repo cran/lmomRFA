@@ -23,14 +23,13 @@ reglmr(xmom, weight)
 Vector containing the regional average \eqn{L}-moments.
 }
 %\references{}
-\author{J. R. M. Hosking \email{hosking@watson.ibm.com}}
+\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
 \note{This function is deprecated and may be removed
 from a future version of the package.
 Function \code{\link{regavlmom}} is the recommended replacement.
 }
 %\seealso{}
 \examples{
-data(Maxwind)
 (xmom<-t(sapply(Maxwind,samlmu)))
 nrec<-sapply(Maxwind,length)
 reglmr(xmom,nrec)   # weighted by record length

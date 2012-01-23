@@ -5,6 +5,19 @@
        **************************************************
 
 
+Version 2.4     2012 Jan 23
+
+   o   The package uses lazy loading of data, so its datasets (Appalach,
+       Cascades, Maxwind) can be accessed without first calling data().
+
+   o   regtst() now responds more quickly to a user interrupt (e.g. pressing
+       Esc from the R Windows GUI).
+
+   o   Fixed: regtst() would give an error when the discordancy measure could
+       not be calculated because the covariance matrix of the sample L-moment
+       ratios (matrix A of Hosking and Wallis, 1997, eq. (3.2)) was singular.
+
+
 Version 2.3     2010 Aug 21
 
    o   regsimq() no longer gives an error when asked to compute the estimation

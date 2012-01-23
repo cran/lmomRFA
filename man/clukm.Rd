@@ -28,7 +28,7 @@ for \code{\link{kmeans}}.}   % .... is this adequate?
   \emph{Regional frequency analysis: an approach based on \eqn{L}-moments}.
   Cambridge University Press.
 }
-\author{J. R. M. Hosking \email{hosking@watson.ibm.com}}
+\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
 \note{
 \code{clukm} is a wrapper for the \R function \code{kmeans}.
 The only difference is that in \code{clukm} the user supplies an initial
@@ -65,7 +65,7 @@ bb <- by(Appalach, clkm$cluster, function(x)
      ave.t = round(weighted.mean(x$t, x$n), 3),
      ave.t_3 = round(weighted.mean(x$t_3, x$n), 3)))
 # Order the clusters in increasing order of minimum area
-ord <- order(sapply(bb, "[", 1))
+ord <- order(sapply(bb, "[", "min.area"))
 # Make the result into a data frame.  Compare with Hosking
 # and Wallis (1997), Table 9.5.
 do.call(rbind, bb[ord])

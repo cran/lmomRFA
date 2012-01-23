@@ -39,7 +39,7 @@ after the \eqn{i}th merge.}
   \emph{Regional frequency analysis: an approach based on \eqn{L}-moments}.
   Cambridge University Press.
 }
-\author{J. R. M. Hosking \email{hosking@watson.ibm.com}}
+\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
 \note{Clustering is performed internally by function \code{\link{hclust}}
 in the \R \pkg{stats} package.}
 \seealso{\code{\link{cluinf}} to get details of the clusters

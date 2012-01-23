@@ -175,7 +175,7 @@ regtst<-function(regdata, nsim=1000){
     maxrec=as.integer(maxrec))
 
   if (all(fort$d==0)) {
-    is.na(d[])<-TRUE
+    is.na(fort$d[])<-TRUE
     warning("unable to invert sum-of-squares matrix - D statistics not calculated")
   }
 

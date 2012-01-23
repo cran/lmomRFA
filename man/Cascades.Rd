@@ -6,7 +6,7 @@
 \eqn{L}-moments of annual precipitation totals for the
 \dQuote{North Cascades} region of Plantico et al. (1990).
 }
-\usage{data(Cascades)}
+\usage{Cascades}
 \format{
   An object of class \code{\link{regdata}}.
   It is a  data frame with 19 observations on the following 7 variables:
@@ -47,7 +47,6 @@ levels of anthropogenic greenhouse gases?
 \emph{Journal of Geophysical Research}, \bold{95}, 16617--16637.
 }
 \examples{
-data(Cascades)
 Cascades        # L-moment ratios, etc., for the Cascades data
 lmrd(Cascades)  # L-moment ratio diagram for the Cascades data
 }

@@ -140,7 +140,7 @@ An object of class \code{"regtst"}, which is a list with elements as follows.
   \emph{Regional frequency analysis: an approach based on \eqn{L}-moments}.
   Cambridge University Press.
 }
-\author{J. R. M. Hosking \email{hosking@watson.ibm.com}}
+\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
 \note{
   Data frame \code{regdata} may have only six columns,
   i.e. the fifth \eqn{L}-moment ratio \eqn{t_5} may be omitted.
@@ -155,11 +155,9 @@ An object of class \code{"regtst"}, which is a list with elements as follows.
 # the file 'cascades.out' in the LMOMENTS Fortran package at
 # http://lib.stat.cmu.edu/lmoments/general (results will not
 # be identical, because random-number generators are different).
-data(Cascades)
 summary(regtst(Cascades, nsim=500))
 
 # Output from 'regsamlmu' can be fed straight into 'regtst'
-data(Maxwind)
 regtst(regsamlmu(Maxwind))
 }
 \keyword{misc}

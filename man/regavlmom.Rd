@@ -20,11 +20,10 @@ Computes a regional weighted average of \eqn{L}-moments.
 Vector containing the regional average \eqn{L}-moments.
 }
 %\references{}
-\author{J. R. M. Hosking \email{hosking@watson.ibm.com}}
+\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
 %\note{}
 %\seealso{}
 \examples{
-data(Maxwind)
 reglm <- regsamlmu(Maxwind)
 regavlmom(reglm)            # Weight proportional to record length
 regavlmom(reglm, weight=1)  # Equal weights

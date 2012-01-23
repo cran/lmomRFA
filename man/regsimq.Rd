@@ -135,7 +135,7 @@ This is a list with the following components:
   \emph{Regional frequency analysis: an approach based on \eqn{L}-moments}.
   Cambridge University Press.
 }
-\author{J. R. M. Hosking \email{hosking@watson.ibm.com}}
+\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
 \note{
 Error bounds for the regional growth curve apply to the
 regional growth curve regarded as an estimator of the

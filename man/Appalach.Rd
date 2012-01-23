@@ -6,7 +6,7 @@
 Site characteristics and sample \eqn{L}-moments of annual maximum streamflow
 for 104 gaging stations in Appalachia.
 }
-\usage{data(Appalach)}
+\usage{Appalach}
 \format{
   A data frame with 104 observations on the following 11 variables:
   \describe{
@@ -43,6 +43,6 @@ Fortran routines for use with the method of \eqn{L}-moments, Version 3.
 Research Report RC20525, IBM Research Division, Yorktown Heights, N.Y.
 }
 \examples{
-data(Appalach)
+Appalach
 }
 \keyword{datasets}

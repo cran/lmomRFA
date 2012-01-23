@@ -71,7 +71,7 @@ there should be a lot of quantiles!), using graphics parameters
 }
 %\value{}
 %\references{}
-\author{J. R. M. Hosking \email{hosking@watson.ibm.com}}
+\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
 %\note{}
 \seealso{\code{\link{regfit}}, which creates objects of class \code{"rfd"};
 \code{\link{regquantbounds}} and \code{\link{sitequantbounds}},
@@ -82,7 +82,7 @@ all in package \pkg{lmom}, for adding further curves and points
 to the plot.
 }
 \examples{
-data(Cascades)                  # An object of class "regdata"
+Cascades                        # An object of class "regdata"
 rfit <- regfit(Cascades, "gno") # Fit a generalized normal distribution
 
 evplot(rfit)                    # Plot the regional growth curve

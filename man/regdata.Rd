@@ -47,12 +47,11 @@ Only data frames and numeric matrices can be converted.
 }
 \value{An object of class \code{"regdata"}.}
 %\references{}
-\author{J. R. M. Hosking \email{hosking@watson.ibm.com}}
+\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
 %\note{}
 %\seealso{}
 \examples{
-data(Cascades)  # 'Cascades' is of class "regdata"
-Cascades
+Cascades        # 'Cascades' is of class "regdata"
 
 # Create a data frame with site statistics
 dd<-data.frame(

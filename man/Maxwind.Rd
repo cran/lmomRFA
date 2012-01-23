@@ -5,7 +5,7 @@
 \description{
 Annual maximum wind speeds at 12 sites in the southeast U.S.
 }
-\usage{data(Maxwind)}
+\usage{Maxwind}
 \format{
 A list of 12 numeric vectors.
 }
@@ -26,6 +26,7 @@ Washington, D.C.
 }
 %\references{}
 \examples{
-data(Maxwind)
+str(Maxwind)
+regsamlmu(Maxwind)  # sample L-moments
 }
 \keyword{datasets}

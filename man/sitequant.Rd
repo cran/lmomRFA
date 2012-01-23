@@ -56,11 +56,10 @@ Each function takes a single argument, a vector of probabilities,
 and returns a vector of quantiles.
 }
 %\references{}
-\author{J. R. M. Hosking \email{hosking@watson.ibm.com}}
+\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
 %\note{}
 %\seealso{}
 \examples{
-data(Cascades)
 rfit <- regfit(Cascades, "gno")   # Fit regional distribution
 
 ## Quantiles for:
