@@ -1,5 +1,6 @@
 \name{regtst}
 \alias{regtst}
+\alias{regtst.s}
 \alias{print.regtst}
 \title{Test statistics for regional frequency analysis}
 \description{
@@ -9,11 +10,10 @@ These are the statistics \eqn{D_i}{D_i}, \eqn{H}, and \eqn{Z^{\rm DIST}}{Z^{DIST
 defined respectively in sections 3.2.3, 4.3.3, and 5.2.3 of
 Hosking and Wallis (1997).
 }
-%\synopsis{
-%print.regtst(x, ...)
-%}
 \usage{
 regtst(regdata, nsim=1000)
+
+regtst.s(regdata, nsim=1000)
 }
 \arguments{
   \item{regdata}{
@@ -87,6 +87,13 @@ The sampling variability is estimated by Monte Carlo simulation
 using \code{nsim} replications of the region.
 Results will vary between invocations of \code{regtst}
 with different seeds for the random-number generator.
+
+\code{regtst} and \code{regtst.s} are functionally identical.
+\code{regtst} calls a Fortran routine internally and is faster,
+typically by a factor of 3 or 4.
+\code{regtst.s} is written almost entirely in the S language;
+it is provided so that users can see how the calculations are done,
+and can conveniently alter the code for their own purposes if necessary.
 }
 \value{
 An object of class \code{"regtst"}, which is a list with elements as follows.

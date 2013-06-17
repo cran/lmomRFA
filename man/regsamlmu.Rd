@@ -13,7 +13,7 @@ regsamlmu(x, nmom = 5, sort.data = TRUE, lcv = TRUE)
 \arguments{
   \item{x}{A list of numeric vectors, or a numeric matrix.}
   \item{nmom}{Number of \eqn{L}-moments to be computed.}
-  \item{sort.data}{Whether each data set should be sorted.}
+  \item{sort.data}{Logical: whether each data set should be sorted.}
   \item{lcv}{Logical.
     If \code{TRUE}, the second \eqn{L}-moment will be expressed
     as a fraction of the mean, i.e. the computed value will be

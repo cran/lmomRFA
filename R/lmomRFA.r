@@ -218,6 +218,7 @@ regtst<-function(regdata, nsim=1000){
     t4fit=fort$t4fit,
     Z=fort$z)
 
+  names(out$D)<-regdata[[1]]
   names(out$rmom)<-c("mean","t","t_3","t_4","t_5")
   if (nsim>1) {
     names(out$rpara)<-lmom:::lmom.dist$kap$parnames
@@ -226,7 +227,104 @@ regtst<-function(regdata, nsim=1000){
 
   class(out)<-"regtst"
   return(out)
+}
 
+regtst.s<-function(regdata, nsim=1000) {
+##
+##  (mostly) native S version of regtst()
+##
+##  "Mostly", because calculations in inner loop use fast versions
+##  of quakap() and samlmu() that call Fortran routines.
+##
+  regdata<-as.regdata(regdata)
+
+  if (ncol(regdata)<6)
+    stop("'regdata' must be a data frame with at least 6 columns")
+
+  nsites<-nrow(regdata)
+  len<-regdata[,2]
+  xmom <- if (ncol(regdata)==6) cbind(as.matrix(regdata[,4:6]),NA) else as.matrix(regdata[,4:7])
+
+  # Compute discordancy measure
+  if (nsites<=3) D<-rep(1,nsites)
+  else {
+    u<-xmom[,1:3]
+    D<-try(nsites/(nsites-1)/3*mahalanobis(u,colMeans(u),cov(u)),silent=TRUE)
+    if (inherits(D,"try-error")) {
+      D<-rep(NA_real_,nsites)
+      warning("unable to invert sum-of-squares matrix - D statistics not calculated")
+    }
+  }
+  names(D)<-regdata[[1]]
+
+  dc1<-c(3, 3, 3, 3, 1.333, 1.6481, 1.9166, 2.1401, 2.3287,
+    2.4906, 2.6321, 2.7573, 2.8694, 2.9709, 3, 3, 3, 3)
+  dc2<-c(4, 4, 4, 4, 1.3333, 1.6648, 1.9821, 2.2728, 2.5337,
+    2.7666, 2.9748, 3.162, 3.331, 3.4844, 3.6246, 3.7532,
+    3.8718, 3.9816)
+  Dcrit <- if (nsites>length(dc1)) c(3,4) else c(dc1[nsites],dc2[nsites])
+
+  rmom<-c(1,apply(xmom,2,weighted.mean,w=len))
+
+  para<-list(glo=pelglo(rmom), gev=pelgev(rmom), gno=pelgno(rmom),
+             pe3=pelpe3(rmom), gpa=pelgpa(rmom),
+             wak = if (ncol(regdata)==6)
+               setNames(rep(NA_real_,5),lmom:::lmom.dist$wak$parnames) else pelwak(rmom))
+# or... #    wak = if (ncol(regdata)==6) {z<-pelwak(c(0,1,0,0,0));is.na(z)<-TRUE;z} else pelwak(rmom))
+
+  if (nsim<=1) {
+
+    rpara<-vobs<-vbar<-vsd<-H<-Z<-t4fit<-NULL
+
+  } else {
+
+    rpara <- if (rmom[4]<=(1+5*rmom[3]^2)/6) pelkap(rmom) else c(pelglo(rmom),-1)
+
+    # Fast version of quakap(), for use in inner loop
+    my.quakap<-function(f,para) .Fortran("qkap",PACKAGE="lmomRFA",
+        as.double(f),length(f),as.double(para))[[1]]
+
+    re<-replicate(nsim, {
+      lmrsim<-sapply(seq_len(nsites), function(j) {  # For each site:
+        nrec<-len[j]
+        simdat<-my.quakap(runif(nrec),rpara)         # - Generate simulated data
+        .samlmu(simdat)                              # - Compute L-moment ratios
+      })
+      lmrsim[2,]<-lmrsim[2,]/lmrsim[1,]              # Compute L-CV of simulated data
+      regave<-apply(lmrsim,1,weighted.mean,w=len)
+      sw<-sweep(lmrsim,1,regave)
+      v1<-sqrt(weighted.mean(sw[2,]^2,w=len))
+      v2<-weighted.mean(sqrt(sw[2,]^2+sw[3,]^2),w=len)
+      v3<-weighted.mean(sqrt(sw[3,]^2+sw[4,]^2),w=len)
+      c(v1,v2,v3,regave[4])    # V statistics and regional average t_4
+    })
+    re.bar<-apply(re,1,mean)
+    re.sd<-apply(re,1,sd)
+    vbar<-re.bar[1:3]
+    vsd<-re.sd[1:3]
+    t4bias<-re.bar[4]-rmom[4]
+    t4sd<-re.sd[4]
+
+    sw<-sweep(t(xmom[,1:3]),1,rmom[2:4])
+    v1<-sqrt(weighted.mean(sw[1,]^2,w=len))
+    v2<-weighted.mean(sqrt(sw[1,]^2+sw[2,]^2),w=len)
+    v3<-weighted.mean(sqrt(sw[2,]^2+sw[3,]^2),w=len)
+    vobs<-c(v1,v2,v3)
+    H<-(vobs-vbar)/vsd
+
+    t4fit<-sapply(names(para)[1:5],function(dist) lmom:::lmrxxx(dist,para[[dist]],4)$lmom[4])
+    Z<-(t4fit-rmom[4]+t4bias)/t4sd
+
+    names(rpara)<-lmom:::lmom.dist$kap$parnames
+    names(t4fit)<-names(Z)<-names(para)[1:5]
+  }
+
+  out<-list(data=regdata, nsim=nsim, D=D, Dcrit=Dcrit,
+    rmom=rmom, rpara=rpara, vobs=vobs, vbar=vbar, vsd=vsd, H=H,
+    para=para, t4fit=t4fit, Z=Z)
+  names(out$rmom)<-c("mean", "t", "t_3", "t_4", "t_5")
+  class(out)<-"regtst"
+  return(out)
 }
 
 print.regtst<-function(x,...) {
@@ -804,9 +902,9 @@ regsimq<-function(qfunc, para, cor=0, index=NULL, nrec, nrep=10000,
 
   sa<-sapply(seq(along=f), function(iq) { # For each quantile F:
     ou<-outer(sim.rgc[iq,,drop=FALSE],true.asgc[iq,,drop=FALSE],"/")
-                                             # - matrix of ratios qhat^{[m]}(F)/q_i(F) (F fixed, i varying)
-    rr<-mean(sqrt(colMeans((ou-1)^2)))       # - average, across sites, of rel. RMSE of qhat as estimator of q_i
-    qq<-my.quantile(ou,probs=boundprob)      # - quantiles of the ratio qhat/q_i
+                                         # - matrix of ratios qhat^{[m]}(F)/q_i(F) (F fixed, i varying)
+    rr<-sqrt(mean((ou-1)^2))             # - rel. RMSE of qhat as estimator of q_i
+    qq<-my.quantile(ou,probs=boundprob)  # - quantiles of the ratio qhat/q_i
     c(rr,qq)
   })
   rel.RMSE<-sa[1,]
@@ -830,8 +928,11 @@ regsimq<-function(qfunc, para, cor=0, index=NULL, nrec, nrep=10000,
 
   # sim.rgcratio is a matrix each of whose rows contains, for a single F,
   # 'nrep' realizations of qhat(F)/q_i(F) for varying i
-  sim.rgcratio <- if (save) sim.rgc/true.asgc[,rep(1:nsites,length=nrep)]
-    else NULL
+  sim.rgcratio<-NULL
+  if (save) {
+    sim.rgcratio<-sim.rgc/true.asgc[,rep(1:nsites,length=nrep)]
+    rownames(sim.rgcratio)<-f
+  }
 
   out<-list(
     f=f,

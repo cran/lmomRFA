@@ -36,7 +36,7 @@ and the quantile function of that distribution would plot as a straight line.
   \item{ylim}{Y axis limits.}
   \item{xlab}{X axis label.}
   \item{ylab}{Y axis label.}
-  \item{rp.axis}{Logical. Whether to draw the \dQuote{Return period} axis,
+  \item{rp.axis}{Logical: whether to draw the \dQuote{Return period} axis,
         a secondary horizontal axis.}
   \item{type}{Vector of plot types.  The first element is for the quantile
         function; subsequent elements are for the error bounds,

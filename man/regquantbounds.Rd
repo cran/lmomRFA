@@ -11,8 +11,7 @@ or of distributions at individual sites (\code{sitequantbounds}).
 \usage{
 regquantbounds(relbounds, rfd)
 
-sitequantbounds(relbounds, rfd, sitenames, index, seindex,
-  drop = TRUE)
+sitequantbounds(relbounds, rfd, sitenames, index, seindex, drop = TRUE)
 }
 \arguments{
   \item{relbounds}{An object of class \code{"regsimq"},
@@ -122,8 +121,7 @@ are the same for all sites in the region) to hold exactly.
 The example below illustrates this practice.
 }
 \seealso{\code{regsimq}, which runs the simulations
-that generate the results returned by \code{regquantbounds};
-\code{sitequantbounds}, for analogous computations for individual sites.
+that generate the results returned by \code{regquantbounds}.
 }
 \examples{
 data(Cascades)              # A regional data set

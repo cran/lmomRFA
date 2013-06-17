@@ -4,6 +4,7 @@ C  Based on the LMOMENTS Fortran package, version 3.04.
 C
 C  The following routines are called from R functions:
 C
+C    QKAP
 C    REGTST
 C
 C  The following routines are called from other Fortran routines.
@@ -24,7 +25,7 @@ C    PELGPA  (=)
 C    PELKAP  (=)
 C    PELPE3  (=)
 C    PELWAK
-C    QUAKAP
+C    QKAP
 C    SAMLMU  (=)
 C    SORT
 C
@@ -152,7 +153,7 @@ C                  record lengths.
 C
 C  OTHER FORTRAN ROUTINES USED: DERF,DIGAMD,DLGAMA,LMRGEV,LMRGLO,LMRGNO,
 C    LMRGPA,LMRPE3,PELGEV,PELGLO,PELGNO,PELGPA,PELKAP,PELPE3,PELWAK,
-C    QUAKAP,SAMLMU,SORT
+C    QKAP,SAMLMU,SORT
 C
 C  C ROUTINES USED: CURAND,RANGET,RANPUT
 C
@@ -290,7 +291,7 @@ C
       SUM3=ZERO
       SUM4=ZERO
 C
-C     Check for user interrupt from R
+C         Check for user interrupt from R
 C
       CALL RCHKUSR()
 C
@@ -305,9 +306,7 @@ C
 C
 C         TRANSFORM FROM UNIFORM TO KAPPA
 C
-      DO 190 J=1,NREC
-      X(J)=QUAKAP(X(J),RPARA)
-  190 CONTINUE
+      CALL QKAP(X,NREC,RPARA)
 C
 C         FIND L-MOMENTS OF SIMULATED DATA
 C
@@ -1831,70 +1830,39 @@ C
       DO 1010 I=1,5
  1010 PARA(I)=ZERO
       END
-C===================================================== QUAKAP.FOR
-      DOUBLE PRECISION FUNCTION QUAKAP(F,PARA)
-C***********************************************************************
-C*                                                                     *
-C*  FORTRAN CODE WRITTEN FOR INCLUSION IN IBM RESEARCH REPORT RC20525, *
-C*  'FORTRAN ROUTINES FOR USE WITH THE METHOD OF L-MOMENTS, VERSION 3' *
-C*                                                                     *
-C*  J. R. M. HOSKING                                                   *
-C*  IBM RESEARCH DIVISION                                              *
-C*  T. J. WATSON RESEARCH CENTER                                       *
-C*  YORKTOWN HEIGHTS                                                   *
-C*  NEW YORK 10598, U.S.A.                                             *
-C*                                                                     *
-C*  VERSION 3     AUGUST 1996                                          *
-C*                                                                     *
-C***********************************************************************
+C===================================================== QKAP.FOR
+      SUBROUTINE QKAP(X,N,PARA)
 C
 C  QUANTILE FUNCTION OF THE KAPPA DISTRIBUTION
+C  Implemented as a subroutine for a vector of inputs
+C  Does not test validity of parameters
+C
+C  Arguments
+C  X      *in/out* Array of length N. On input, contains the
+C                  probabilities (arguments of the quantile function).
+C                  On exit, contains the quantiles.
+C  N      * input* Size of array X.
+C  PARA   * input* Array of length 4. Contains the parameters of the
+C                  distribution.
 C
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
-      DOUBLE PRECISION PARA(4)
+      DOUBLE PRECISION X(N),PARA(4)
       DATA ZERO/0D0/,ONE/1D0/
-C----
-C Next lines to assuage compilers that warn that variables
-C 'might be used uninitialized'
-      QUAKAP=ZERO
-C----
-      U=PARA(1)
-      A=PARA(2)
-      G=PARA(3)
-      H=PARA(4)
-      IF(A.LE.ZERO)GOTO 1000
-      IF(F.LE.ZERO.OR.F.GE.ONE)GOTO 10
-      Y=-DLOG(F)
-      IF(H.NE.ZERO)Y=(ONE-DEXP(-H*Y))/H
-      Y=-DLOG(Y)
-      IF(G.NE.ZERO)Y=(ONE-DEXP(-G*Y))/G
-      QUAKAP=U+A*Y
+      IF (PARA(4).EQ.ZERO) THEN
+        DO 10 I=1,N
+        X(I)=PARA(1)+PARA(2)/PARA(3)*(ONE-(-LOG(X(I)))**PARA(3))
+   10   CONTINUE
+      ELSE IF (PARA(4).EQ.-ONE) THEN
+        DO 20 I=1,N
+        X(I)=PARA(1)+PARA(2)/PARA(3)*(ONE-(ONE/X(I)-ONE)**PARA(3))
+   20   CONTINUE
+      ELSE
+        DO 30 I=1,N
+        X(I)=PARA(1)+PARA(2)/PARA(3)*
+     *    (ONE-((ONE-X(I)**PARA(4))/PARA(4))**PARA(3))
+   30   CONTINUE
+      END IF
       RETURN
-C
-   10 IF(F.EQ.ZERO)GOTO 20
-      IF(F.EQ.ONE)GOTO 30
-      GOTO 1010
-   20 IF(H.LE.ZERO.AND.G.LT.ZERO)QUAKAP=U+A/G
-      IF(H.LE.ZERO.AND.G.GE.ZERO)GOTO 1010
-      IF(H.GT.ZERO.AND.G.NE.ZERO)QUAKAP=U+A/G*(ONE-H**(-G))
-      IF(H.GT.ZERO.AND.G.EQ.ZERO)QUAKAP=U+A*DLOG(H)
-      RETURN
-   30 IF(G.LE.ZERO)GOTO 1010
-      QUAKAP=U+A/G
-      RETURN
-C
- 1000 CONTINUE
-C     WRITE(6,7000)
-      QUAKAP=ZERO
-      RETURN
- 1010 CONTINUE
-C      WRITE(6,7010)
-      QUAKAP=ZERO
-      RETURN
-C
-C7000 FORMAT(' *** ERROR *** ROUTINE QUAKAP : PARAMETERS INVALID')
-C7010 FORMAT(' *** ERROR *** ROUTINE QUAKAP :',
-C    *  ' ARGUMENT OF FUNCTION INVALID')
       END
 C===================================================== SAMLMU.FOR
       SUBROUTINE SAMLMU(X,N,XMOM,NMOM,IFAIL)

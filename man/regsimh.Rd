@@ -101,8 +101,8 @@ pp <- t(apply(cbind(means, means*LCVs ,Lskews), 1, pelgno))
 # average inter-site correlation for the Cascades data
 avcor <- 0.64
 
-# Run the simulation.  It will take some time (about 1 minute
-# on a Lenovo T60, a moderately fast 2006-vintage laptop)
+# Run the simulation.  It will take some time (about 25 sec
+# on a Lenovo W500, a moderately fast 2011-vintage laptop)
 # Note that the results are consistent with the statement
 # "the average H value of simulated regions is 1.08"
 # in Hosking and Wallis (1997, p.98).

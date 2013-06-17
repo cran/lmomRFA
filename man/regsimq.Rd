@@ -171,7 +171,7 @@ at individual sites.
 \seealso{
 \code{\link{regfit}}, for details of fitting a regional frequency distribution;
 \code{\link{regquantbounds}} and \code{\link{sitequantbounds}}, for
-converting the relative bounds returned by \code{regsimh} into absolute bounds
+converting the relative bounds returned by \code{regsimq} into absolute bounds
 for quantiles of the regional growth curve or of the
 frequency distributions at individual sites.}
 \examples{
