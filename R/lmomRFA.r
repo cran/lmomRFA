@@ -8,7 +8,7 @@
 #*  YORKTOWN HEIGHTS                                                   *
 #*  NEW YORK 10598, U.S.A.                                             *
 #*                                                                     *
-#*  Version 2.0    April 2009                                          *
+#*  Version 2.6    January 2014                                        *
 #*                                                                     *
 #***********************************************************************
 
@@ -57,7 +57,6 @@ reglmr<-function(xmom, weight) {
   xmom[,1]<-1
   apply(xmom,2,weighted.mean,w=weight,na.rm=TRUE)
 }
-
 
 as.regdata<-function(x, warn.names=TRUE) {
 ##  Convert an R object to class "regdata"
@@ -487,12 +486,19 @@ print.summary.regtst<-function(x, decimals, ...) {
 regfit<-function(regdata, dist) {
 ## Fit a regional frequency distribution
   regdata<-as.regdata(regdata)
+
   if (!is.character(dist) || length(dist)!=1)
     stop("'dist' must be a character string")
+  pelname<-paste("pel",dist,sep="")
+  quaname<-paste("qua",dist,sep="")
+  pf<-parent.frame()
+  if (!exists(pelname,mode="function",envir=pf)) stop('function "',pelname,'" not found')
+  if (!exists(quaname,mode="function",envir=pf)) stop('function "',quaname,'" not found')
+  pelfun<-get(pelname,mode="function",envir=pf)
+  quafun<-get(quaname,mode="function",envir=pf)
+
   rmom<-regavlmom(regdata)
-  pelfun<-get(paste("pel",dist,sep=""))
   para<-pelfun(rmom)
-  quafun<-get(paste("qua",dist,sep=""))
   out<-structure(
     list(
       dist=dist,
@@ -698,183 +704,186 @@ regsimq<-function(qfunc, para, cor=0, index=NULL, nrec, nrep=10000,
   save=TRUE) {
 ## Simulations for error bounds of regional growth curve
 
-   nsites<-length(nrec)
-   nmax<-max(nrec)
-   if (any(nrec<=0)) stop("record lengths must all be positive")
+  nsites<-length(nrec)
+  nmax<-max(nrec)
+  if (any(nrec<=0)) stop("record lengths must all be positive")
 
-   if (!is.list(qfunc)) qfunc<-list(qfunc)
-   if (!all(sapply(qfunc,is.function)))
-     stop("'qfunc' must be a function or a list of functions")
-   if (!is.element(length(qfunc),c(1,nsites)))
-     stop("list 'qfunc' must have either 1 or 'length(nrec)' components")
+  if (!is.list(qfunc)) qfunc<-list(qfunc)
+  if (!all(sapply(qfunc,is.function)))
+    stop("'qfunc' must be a function or a list of functions")
+  if (!is.element(length(qfunc),c(1,nsites)))
+    stop("list 'qfunc' must have either 1 or 'length(nrec)' components")
 
-   # Function q2qua() converts a "base R"-type quantile function (one argument for
-   # each parameter of the distribution) into a "package lmom"-type quantile function
-   # (two arguments, the second one containing all the parameters of the distribution)
+  # Function q2qua() converts a "base R"-type quantile function (one argument for
+  # each parameter of the distribution) into a "package lmom"-type quantile function
+  # (two arguments, the second one containing all the parameters of the distribution)
 
-   q2qua <- function(f) function(u,p) do.call(f,c(list(u),as.list(p)))
+  q2qua <- function(f) function(u,p) do.call(f,c(list(u),as.list(p)))
 
-   # We don't use the reverse transformation, but here it is anyway
-   # qua2q <- function(f) function(u,...) mapply(f,u,mapply(c,...,SIMPLIFY=FALSE))
+  # We don't use the reverse transformation, but here it is anyway
+  # qua2q <- function(f) function(u,...) mapply(f,u,mapply(c,...,SIMPLIFY=FALSE))
 
-   # Convert all elements of the 'qfunc' list to "package-lmom" type quantile functions
+  # Convert all elements of the 'qfunc' list to "package-lmom" type quantile functions
 
-   qfunc<-lapply(qfunc, function(func)
-     if (length(formals(func))==2) func else q2qua(func))
+  qfunc<-lapply(qfunc, function(func)
+    if (length(formals(func))==2) func else q2qua(func))
 
-   # Make 'qfunc' a list of 'nsites' functions,
-   # the quantile functions for each site.
+  # Make 'qfunc' a list of 'nsites' functions,
+  # the quantile functions for each site.
 
-   if (length(qfunc)==1) qfunc<-rep(qfunc,nsites)
+  if (length(qfunc)==1) qfunc<-rep(qfunc,nsites)
 
-   # Convert the 'para' argument into a list of 'nsites' vectors,
-   # each containing the distribution parameters for one site.
+  # Convert the 'para' argument into a list of 'nsites' vectors,
+  # each containing the distribution parameters for one site.
 
-   if (missing(para)) para<-list(NULL)
-   else if (is.vector(para) && is.numeric(para)) para<-list(para)
-   else {
-     if (is.data.frame(para)) para<-as.matrix(para)
-     if (is.matrix(para)) {
-       if (!is.element(nrow(para),c(1,nsites)))
-         stop("matrix or data frame 'para' must have either 1 or 'length(nrec)' rows")
-       para<-lapply(split(para,row(para)),function(x) x[!is.na(x)])
-     } else if (is.list(para)) {
-       if (!is.element(length(para),c(1,nsites)))
-         stop("list 'para' must have either 1 or 'length(nrec)' components")
-       para<-lapply(para,unlist)
-     } else stop("'para' must be a vector, matrix, data frame or list")
-   }
-   if (length(para)==1) para<-rep(para,nsites)
+  if (missing(para)) para<-list(NULL)
+  else if (is.vector(para) && is.numeric(para)) para<-list(para)
+  else {
+    if (is.data.frame(para)) para<-as.matrix(para)
+    if (is.matrix(para)) {
+      if (!is.element(nrow(para),c(1,nsites)))
+        stop("matrix or data frame 'para' must have either 1 or 'length(nrec)' rows")
+      para<-lapply(split(para,row(para)),function(x) x[!is.na(x)])
+    } else if (is.list(para)) {
+      if (!is.element(length(para),c(1,nsites)))
+        stop("list 'para' must have either 1 or 'length(nrec)' components")
+      para<-lapply(para,unlist)
+    } else stop("'para' must be a vector, matrix, data frame or list")
+  }
+  if (length(para)==1) para<-rep(para,nsites)
 
-   # Generate the correlation matrix if necessary, and find its Cholesky decomposition
+  # Generate the correlation matrix if necessary, and find its Cholesky decomposition
 
-   nocorr<-identical(cor,0)
-   if (!nocorr) {
-     if (is.matrix(cor)) {
-       cor<-cov2cor(cor)
-       if (!all(dim(cor)==nsites)) stop("matrix 'cor' must be square and of order 'length(nrec)'")
-     } else {
-       avcor<-as.vector(cor)
-       if (length(avcor)!=1) stop("'cor' must be either a matrix or a scalar")
-       cor<-diag(1-avcor,nsites)+avcor
-     }
-     cholcor<-try(chol(cor),silent=TRUE)
-     if (class(cholcor)=="try-error") stop("Correlation matrix is not positive definite")
-   }
+  nocorr<-identical(cor,0)
+  if (!nocorr) {
+    if (is.matrix(cor)) {
+      cor<-cov2cor(cor)
+      if (!all(dim(cor)==nsites)) stop("matrix 'cor' must be square and of order 'length(nrec)'")
+    } else {
+      avcor<-as.vector(cor)
+      if (length(avcor)!=1) stop("'cor' must be either a matrix or a scalar")
+      cor<-diag(1-avcor,nsites)+avcor
+    }
+    cholcor<-try(chol(cor),silent=TRUE)
+    if (class(cholcor)=="try-error") stop("Correlation matrix is not positive definite")
+  }
 
-   # Compute the index flood values if necessary
+  # Compute the index flood values if necessary
 
-   if (is.null(index)) {
-     integrator<-function(f,p) integrate(f,lower=0,upper=1,p)$value
-     index<-tryCatch(mapply(integrator,qfunc,para), error=function(...) NA)
-     if (any(is.na(index)))
-       stop("integration failed: unable to compute index flood value at site(s) ",
-         which(is.na(index)))
-   } else {
-    index<-as.vector(index)
-    if (!is.element(length(index),c(1,nsites)))
-      stop("vector 'index' must have length 1 or 'length(nrec)'")
-    if (length(index)==1) index<-rep(index,length=nsites)
-   }
+  if (is.null(index)) {
+    integrator<-function(f,p) integrate(f,lower=0,upper=1,p)$value
+    index<-tryCatch(mapply(integrator,qfunc,para), error=function(...) NA)
+    if (any(is.na(index)))
+      stop("integration failed: unable to compute index flood value at site(s) ",
+        which(is.na(index)))
+  } else {
+   index<-as.vector(index)
+   if (!is.element(length(index),c(1,nsites)))
+     stop("vector 'index' must have length 1 or 'length(nrec)'")
+   if (length(index)==1) index<-rep(index,length=nsites)
+  }
 
-   # Are all index flood values equal to 1?
+  # Are all index flood values equal to 1?
 
-   index1<-isTRUE(all.equal(index,rep(1,length(index))))
+  index1<-isTRUE(all.equal(index,rep(1,length(index))))
 
-   # Check that the 'fit' routines exist
+  # Check that the 'fit' routines exist
 
-   pelname<-paste("pel",fit,sep="")
-   quaname<-paste("qua",fit,sep="")
-   if (!exists(pelname,mode="function")) stop('function "pelname" not found')
-   if (!exists(quaname,mode="function")) stop('function "quaname" not found')
-   pelfit<-get(pelname,mode="function")
-   quafit<-get(quaname,mode="function")
+  if (!is.character(fit) || length(fit)!=1)
+  stop("'fit' must be a character string")
+  pelname<-paste("pel",fit,sep="")
+  quaname<-paste("qua",fit,sep="")
+  pf<-parent.frame()
+  if (!exists(pelname,mode="function",envir=pf)) stop('function "',pelname,'" not found')
+  if (!exists(quaname,mode="function",envir=pf)) stop('function "',quaname,'" not found')
+  pelfit<-get(pelname,mode="function",envir=pf)
+  quafit<-get(quaname,mode="function",envir=pf)
 
-   # Check quantiles
+  # Check quantiles
 
-   if (any(f<0 | f>1)) stop("probabilities in 'f' must be between 0 and 1")
-   nq<-length(f)
+  if (any(f<0 | f>1)) stop("probabilities in 'f' must be between 0 and 1")
+  nq<-length(f)
 
-   # Check bound values
+  # Check bound values
 
-   if (any(boundprob<0 | boundprob>1)) stop("probabilities in 'boundprob' must be between 0 and 1")
+  if (any(boundprob<0 | boundprob>1)) stop("probabilities in 'boundprob' must be between 0 and 1")
 
-   # qflocal() is a function that generates a function call to its first
-   # argument 'f' with the other arguments of 'qflocal' passed to 'f'.
-   # Thus mapply(qflocal,flist,alist) generates a set of calls
-   # flist[[i]](alist[[i]]).
+  # qflocal() is a function that generates a function call to its first
+  # argument 'f' with the other arguments of 'qflocal' passed to 'f'.
+  # Thus mapply(qflocal,flist,alist) generates a set of calls
+  # flist[[i]](alist[[i]]).
 
-   qflocal <- function(f,...) f(...)
+  qflocal <- function(f,...) f(...)
 
-   # Simulation loop
+  # Simulation loop
 
-   re<-replicate(nrep, {
+  re<-replicate(nrep, {
 
-     # Generate uniform random variates at each site
+    # Generate uniform random variates at each site
 
-     if (nocorr) {
+    if (nocorr) {
 
-       # If there is no inter-site correlation, generate independent
-       # uniform samples at each site
+      # If there is no inter-site correlation, generate independent
+      # uniform samples at each site
 
-       ulist<-lapply(nrec,runif)
+      ulist<-lapply(nrec,runif)
 
-     }  else {
+    }  else {
 
-       # If there is correlation, generate correlated normal samples
-       # each of length 'nmax' ...
+      # If there is correlation, generate correlated normal samples
+      # each of length 'nmax' ...
 
-       zmat<-matrix(rnorm(nsites*nmax),nsites,nmax)
-       zmat<-crossprod(cholcor,zmat)
+      zmat<-matrix(rnorm(nsites*nmax),nsites,nmax)
+      zmat<-crossprod(cholcor,zmat)
 
-       # ... transform to uniform ...
+      # ... transform to uniform ...
 
-       zmat<-pnorm(zmat)
+      zmat<-pnorm(zmat)
 
-       # ... and retain only the required number of data values at each site
+      # ... and retain only the required number of data values at each site
 
-       ulist<-lapply(1:nsites, function(j) zmat[j,1:nrec[j] ])
-     }
+      ulist<-lapply(1:nsites, function(j) zmat[j,1:nrec[j] ])
+    }
 
-     # Transform the uniform variates to the required parent distribution.
-     # Randomly permute the quantile functions (and their parameters),
-     # and, at site i, feed the uniform sample ulist[[i]] through
-     # quantile function qfunc[[j]] with parameters para[[j]]
-     # where j is the permuted version of i.
+    # Transform the uniform variates to the required parent distribution.
+    # Randomly permute the quantile functions (and their parameters),
+    # and, at site i, feed the uniform sample ulist[[i]] through
+    # quantile function qfunc[[j]] with parameters para[[j]]
+    # where j is the permuted version of i.
 
-     perm<-sample(nsites)
-     datlist<-mapply(qflocal, qfunc[perm], ulist, para[perm], SIMPLIFY=FALSE)
+    perm<-sample(nsites)
+    datlist<-mapply(qflocal, qfunc[perm], ulist, para[perm], SIMPLIFY=FALSE)
 
-     # Rescale the data if necessary, so that all sites have population mean 1,
-     # i.e. we permute only the at-site growth curves
+    # Rescale the data if necessary, so that all sites have population mean 1,
+    # i.e. we permute only the at-site growth curves
 
-     if (!index1) datlist<-mapply("/", datlist, index[perm], SIMPLIFY=FALSE)
+    if (!index1) datlist<-mapply("/", datlist, index[perm], SIMPLIFY=FALSE)
 
-     # Rest of loop is just a faster way of computing
-     #   xmom <- regsamlmu(datlist)
-     #   rgc <- regquant(f,regfit(xmom,fit))
-     #   c(xmom[[3]], perm, rgc)
+    # Rest of loop is just a faster way of computing
+    #   xmom <- regsamlmu(datlist)
+    #   rgc <- regquant(f,regfit(xmom,fit))
+    #   c(xmom[[3]], perm, rgc)
 
-     # Compute L-moments for each site
+    # Compute L-moments for each site
 
-     xmom<-sapply(datlist,samlmu,nmom=5)
-     sitemeans<-xmom[1,]
+    xmom<-sapply(datlist,.samlmu,nmom=5)
+    sitemeans<-xmom[1,]
 
-     # Compute regional L-moments
+    # Compute regional L-moments
 
-     xmom[2,]<-xmom[2,]/xmom[1,]
-     xmom[1,]<-1
-     rmom<-apply(xmom,1,weighted.mean,w=nrec)
+    xmom[2,]<-xmom[2,]/xmom[1,]
+    xmom[1,]<-1
+    rmom<-apply(xmom,1,weighted.mean,w=nrec)
 
-     # Fit the distribution
+    # Fit the distribution
 
-     rpara<-pelfit(rmom)
+    rpara<-pelfit(rmom)
 
-     # Regional growth curve estimate at specified quantiles
+    # Regional growth curve estimate at specified quantiles
 
-     rgc<-quafit(f,rpara)
+    rgc<-quafit(f,rpara)
 
-     c(sitemeans,perm,rgc)
+    c(sitemeans,perm,rgc)
 
   })
 
@@ -891,9 +900,10 @@ regsimq<-function(qfunc, para, cor=0, index=NULL, nrec, nrep=10000,
 
   true.asgc<-trueQ/matrix(index,nrow(trueQ),ncol(trueQ),byrow=TRUE)
 
-  # Modified quantile(): if any x value is missing (NA or NaN), set all quantiles equal to NaN.
-  # Avoids error when computing estimation accuracy for an infinite quantile
-  # (e.g. in regsimq() when user specifies f=0 and qfunc has no lower bound).
+  # Modified quantile(): if any x value is missing (NA or NaN), set all
+  # quantiles equal to NaN.  Avoids error when computing estimation accuracy
+  # for an infinite quantile (e.g. in regsimq() when user specifies f=0 and
+  # qfunc has no lower bound).
   my.quantile<-function(x,probs,...)
     if (any(is.na(x))) rep(NaN,length(probs)) else quantile(x,probs,type=6)
 
@@ -919,7 +929,7 @@ regsimq<-function(qfunc, para, cor=0, index=NULL, nrec, nrep=10000,
     true.asgc.permed<-true.asgc[,sim.perm[isite,] ] # Column j is the growth curve that was used for site 'isite' at repetition j
     rgcratio<-sim.rgc/true.asgc.permed              # Matrix of ratios qhat^{[m]}(F)/q_i(F) (F varying, i fixed)
     meanratio<-sim.sitemeans[isite,]                # Ratio of sample to population mean (sample was generated from distribution with mean 1, so no need to divide by index[isite])
-    ratio<-rgcratio*meanratio                       # Matrix of ratios Qhat_i^{[m]}(F)/q_i(F) (F varying, i fixed)
+    ratio<-rgcratio*matrix(meanratio,nq,nrep,byrow=TRUE) # Matrix of ratios Qhat_i^{[m]}(F)/q_i(F) (F varying, i fixed)
     rel.RMSE<-sqrt(rowMeans((ratio-1)^2))
     rel.bounds<-t(apply(ratio,1,my.quantile,probs=boundprob))
     dimnames(rel.bounds)[[2]]<-boundprob
@@ -963,11 +973,18 @@ regquantbounds<-function(relbounds, rfd) {
     warning("regions in 'relbounds' and 'rfd' have different numbers of sites (",
       length(relbounds$relbounds.by.site),",",length(rfd$index),")")
   rgc<-regquant(relbounds$f,rfd)
+  RMSE<-abs(rgc)*relbounds$relbounds.rgc$rel.RMSE
+  RMSE[rgc==0]<-NaN
+  num<-matrix(rgc,length(rgc),length(relbounds$relbounds.rgc)-2,byrow=FALSE)
+  denom<-as.matrix(rev(relbounds$relbounds.rgc[-(1:2)]))
+  bound<-num/denom
+  bound[num>0 & denom<0]<-Inf
+  bound[num<=0]<-NA
   out<-cbind(
-   f=relbounds$f,
-   qhat=rgc,
-   RMSE=rgc*relbounds$relbounds.rgc$rel.RMSE,
-   bound=rgc/rev(relbounds$relbounds.rgc[-(1:2)]))
+    f=relbounds$f,
+    qhat=rgc,
+    RMSE=RMSE,
+    bound=as.data.frame(bound))
   boundprob<-rev(1-relbounds$boundprob)
   colnames(out)[-(1:3)]<-paste("bound",boundprob,sep=".")
   rownames(out)<-NULL
@@ -992,11 +1009,20 @@ sitequantbounds<-function(relbounds, rfd, sitenames, index, seindex, drop=TRUE) 
       else match(sitenames, names(rfd$index))
     out<-lapply(seq_along(sitenumbers), function(j) {
       isite<-sitenumbers[j]
+      relbounds.isite<-relbounds$relbounds.by.site[[isite]]
       Qhat<-index[j]*rgc
+      RMSE<-abs(Qhat)*relbounds.isite$rel.RMSE
+      RMSE[Qhat==0]<-NaN
+      num<-matrix(Qhat,length(Qhat),length(relbounds.isite)-2,byrow=FALSE)
+      denom<-as.matrix(rev(relbounds.isite[-(1:2)]))
+      bound<-num/denom
+      bound[num>0 & denom<0]<-Inf
+      bound[num<=0]<-NA
       out.isite<-cbind(
-        f=relbounds$f, Qhat=Qhat,
-        RMSE=Qhat*relbounds$relbounds.by.site[[isite]]$rel.RMSE,
-        bound=Qhat/rev(relbounds$relbounds.by.site[[isite]][-(1:2)]))
+        f=relbounds$f,
+        Qhat=Qhat,
+        RMSE=RMSE,
+        bound=as.data.frame(bound))
       colnames(out.isite)[-(1:3)]<-paste("bound",boundprob,sep=".")
       rownames(out.isite)<-NULL
       attr(out.isite,"boundprob")<-boundprob
@@ -1004,7 +1030,7 @@ sitequantbounds<-function(relbounds, rfd, sitenames, index, seindex, drop=TRUE) 
       out.isite
     })
     names(out)<-names(rfd$index)[sitenumbers]
-  } else {
+  } else {   # 'index' is present
     if (is.null(relbounds$sim.rgcratio))
       stop("'index' cannot be present if 'relbounds$sim.rgcratio' is NULL")
     if (!all(index>=0)) stop("vales of 'index' must not be negative")
@@ -1034,18 +1060,29 @@ sitequantbounds<-function(relbounds, rfd, sitenames, index, seindex, drop=TRUE) 
         # Qratio: each row contains a random sample from the distribution of
         # Qhat_i(F)/Q_i(F) for this site
         Qratio<-relbounds$sim.rgcratio*rep(meanratio,each=nq)
+        #
         rel.RMSE<-sqrt(rowMeans((Qratio-1)^2))
+        RMSE=abs(Qhat)*rel.RMSE
+        RMSE[Qhat==0]<-NaN
+        #
         rel.bounds<-t(apply(1/Qratio,1,my.quantile,probs=boundprob))
-        dimnames(rel.bounds)[[2]]<-boundprob
+        mult<-matrix(Qhat,nq,ncol(rel.bounds),byrow=FALSE)
+        bound<-mult*rel.bounds
+        bound[mult>0 & rel.bounds<0]<-Inf
+        bound[mult<=0]<-NA
+        #
+        dimnames(bound)[[2]]<-boundprob
         out.isite<-data.frame(row.names=NULL,
-          f=relbounds$f, Qhat=Qhat,
-          RMSE=Qhat*rel.RMSE,
-          bound=Qhat*rel.bounds)
+          f=relbounds$f,
+          Qhat=Qhat,
+          RMSE=RMSE,
+          bound=bound)
         attr(out.isite,"boundprob")<-boundprob
         class(out.isite)<-c("rfdbounds",class(out.isite))
         out.isite
       })
     if (!missing(sitenames)) names(out)<-sitenames
+    else if (!is.null(names(index))) names(out)<-names(index)
   }
   if (drop && length(out)==1) out<-out[[1]]
   return(out)

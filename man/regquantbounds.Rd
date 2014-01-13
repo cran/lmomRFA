@@ -81,6 +81,14 @@ in the simulation procedure that the relative estimation error is
 lognormally distributed, i.e. that the logarithm of the ratio of the
 estimated to the true index flood value has a normal distribution
 with mean 0 and standard deviation \code{seindex/index}.
+
+As noted by Hosking and Wallis (1997, discussion following (6.19)),
+error bounds in the lower tail of the distribution may be unhelpful
+when the fitted distribution can take negative values.
+In these cases the computed bounds will be
+\code{NA} (if the quantile estimate is negative) or
+\code{Inf} (if the quantile estimate is positive but the
+corresponding error bound in \code{relbounds} is negative).
 }
 \value{For \code{regquantbounds}, an object of class \code{"rfdbounds"}.
 This is a data frame with columns

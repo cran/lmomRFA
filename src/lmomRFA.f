@@ -53,12 +53,12 @@ C*  package, version 3.04.  See IBM Research Report RC20525, 'Fortran  *
 C*  routines for use with the method of L-moments, version 3', and its *
 C*  updates.                                                           *
 C*                                                                     *
-C*  Version 1.0    March 2009                                          *
+C*  Version 2.6    January 2014                                        *
 C*                                                                     *
 C***********************************************************************
 C
 C  Summary of differences from the Fortran version
-C  * Omit arguments NAMES,NPROB,PROB,KPRINT,KOUT,A,B
+C  * Omit arguments NAMES,NPROB,PROB,KPRINT,KOUT,A,B,SEED
 C  * Add arguments RPARA,T4FIT,WORK,X,MAXREC
 C  * No printing
 C  * Return (as *output* arguments) all numbers that used to be printed
@@ -70,6 +70,7 @@ C  * Don't stop when unable to invert SS matrix
 C  * Fit the candidate (and Wakeby) distributions even when NSIM.EQ.0
 C  * Compute T4FIT more accurately
 C  * Don't compute quantiles of candidate distributions
+C  * Use R's random-number generator, via C routines RANGET,CURAND,RANPUT
 C
 C  CALCULATES THREE STATISTICS USEFUL IN REGIONAL FREQUENCY ANALYSIS
 C

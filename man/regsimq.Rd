@@ -84,7 +84,7 @@ of the ratio of the estimated regional growth curve
 to the true at-site growth curve
 or of the ratio of the estimated to the true quantiles at individual sites.
 
-For distribution \code{dist} there should exist a function to estimate
+For distribution \code{fit} there should exist a function to estimate
 the parameters of the distribution given a set of \eqn{L}-moments.
 The function should have a name that is the character string
 \code{"pel"} followed by the character string \code{fit}.
@@ -92,17 +92,24 @@ It should accept a single argument, a vector containing \eqn{L}-moments
 \eqn{\ell_1}{l_1}, \eqn{\ell_2}{l_2}, \eqn{t_3}, \eqn{t_4}, etc.,
 and return a vector of distribution parameters.
 
-For distribution \code{dist} there should also exist a quantile function,
+For distribution \code{fit} there should also exist a quantile function,
 which should have a name that is the character string
 \code{"qua"} followed by the character string \code{fit}.
 It should accept two arguments: a vector of probabilities
 and a vector containing the parameters of the distribution.
 
+The search path used to find the \code{"pel"} and \code{"qua"} functions
+is the same as for arguments supplied to \code{regsimq}, i.e.
+the enclosing frames of the function, followed by the search path
+specified by \code{search()}.
+
 The estimation routines and quantile functions in package \pkg{lmom}
 have the form described here.   For example, to use a
-generalized extreme value distribution set \code{dist} to be
+generalized extreme value distribution set \code{fit} to be
 the string \code{"gev"}; then the fitting function \code{pelgev}
-and the quantile function \code{quagev} will be used.
+and the quantile function \code{quagev} will be used
+(unless these functions have been masked by another object
+on the search path).
 }
 \value{An object of class \code{"regsimq"}.
 This is a list with the following components:

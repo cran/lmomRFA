@@ -41,11 +41,18 @@ which should have a name that is the character string
 It should accept two arguments: a vector of probabilities
 and a vector containing the parameters of the distribution.
 
+The search path used to find the \code{"pel"} and \code{"qua"} functions
+is the same as for arguments supplied to \code{regfit}, i.e.
+the enclosing frames of the function, followed by the search path
+specified by \code{search()}.
+
 The estimation routines and quantile functions in package \pkg{lmom}
-have the form described here.   For example, to fit a
+have the form described here.   For example, to use a
 generalized extreme value distribution set \code{dist} to be
 the string \code{"gev"}; then the fitting function \code{pelgev}
-and the quantile function \code{quagev} will be used.
+and the quantile function \code{quagev} will be used
+(unless these functions have been masked by another object
+on the search path).
 }
 \value{An object of class \code{"rfd"},
 containing the specification of the regional frequency distribution:

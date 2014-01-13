@@ -5,6 +5,48 @@
        **************************************************
 
 
+Version 3.0     2014 Jan 13
+
+   o   Increase in major version number, occasioned by some significant recent
+       changes:
+
+       *  Fix to regsimq() noted below: earlier versions of the package would
+          give incorrect results, though errors were typically less than 10%.
+
+       *  Change to computation of relative RMSE in version 2.5.
+
+       Results returned by regsimq() in earlier versions of the package should
+       be regarded as unreliable.
+
+   o   Now explictly imports standard package "stats", and functions from
+       standard package "graphics".
+
+   o   In regfit() and regsimq(), the search path used to find the functions
+       specified in the arguments regfit(dist=) and regsimq(fit=) is now
+       explicitly defined.  (The search path was previously undocumented,
+       and was not consistent across all prior versions of the package.)
+
+   o   regfit() and regsimq() give more informative error messages when the
+       functions specified in their respective arguments 'dist' and 'fit'
+       cannot be found.
+
+   o   regquantbounds() and sitequantbounds() should now never return negative
+       error bounds.  Instead, NA or Inf is returned for error bounds
+       corresponding to negative or positive estimated quantiles, respectively.
+
+   o   regsimq() is faster, by about 25% in the author's tests.
+
+   o   Fixed: regquantbounds() and sitequantbounds() would give negative values
+       for RMSEs corresponding to negative estimated quantiles.
+
+   o   Fixed: regsimq() computed incorrect values in its return value component
+       "relbounds.by site".
+
+   o   Fixed: sitequantbounds(), when 'sitenames' is missing and 'index' has
+       names, is documented  to use the names of 'index' as the site names
+       but did not in fact do so.
+
+
 Version 2.5     2013 Jun 17
 
    o   Now depends on package lmom, version >= 2.0.
@@ -19,7 +61,7 @@ Version 2.5     2013 Jun 17
        an estimator of a randomly chosen site growth curve.
 
    o   In 'regsimq(...,save=TRUE)', the matrix that is component 'sim.rgcratio'
-       of the return value nmw has row names (derived from the value of the
+       of the return value now has row names (derived from the value of the
        function's argument 'f').
 
    o   Component "D" of the return value from regtst() now has names (the site

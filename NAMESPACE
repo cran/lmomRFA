@@ -1,4 +1,6 @@
 import(lmom)
+import(stats)
+importFrom(graphics, matlines)
 useDynLib(lmomRFA)
 export(cluagg)
 export(cluinf)
