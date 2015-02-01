@@ -42,11 +42,7 @@ C***********************************************************************
 C*                                                                     *
 C*  Fortran code written for R package "lmomRFA"                       *
 C*                                                                     *
-C*  J. R. M. Hosking                                                   *
-C*  IBM Research Division                                              *
-C*  T. J. Watson Research Center                                       *
-C*  Yorktown Heights                                                   *
-C*  New York 10598, U.S.A.                                             *
+C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
 C*                                                                     *
 C*  Based on the routine of the same name in the LMOMENTS Fortran      *
 C*  package, version 3.04.  See IBM Research Report RC20525, 'Fortran  *
@@ -423,11 +419,7 @@ C***********************************************************************
 C*                                                                     *
 C*  Fortran code written for R package "lmom"                          *
 C*                                                                     *
-C*  J. R. M. HOSKING                                                   *
-C*  IBM RESEARCH DIVISION                                              *
-C*  T. J. WATSON RESEARCH CENTER                                       *
-C*  YORKTOWN HEIGHTS                                                   *
-C*  NEW YORK 10598, U.S.A.                                             *
+C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
 C*                                                                     *
 C*  Version 1.0    July 2008                                           *
 C*                                                                     *
@@ -530,11 +522,7 @@ C***********************************************************************
 C*                                                                     *
 C*  Fortran code written for R package "lmom"                          *
 C*                                                                     *
-C*  J. R. M. HOSKING                                                   *
-C*  IBM RESEARCH DIVISION                                              *
-C*  T. J. WATSON RESEARCH CENTER                                       *
-C*  YORKTOWN HEIGHTS                                                   *
-C*  NEW YORK 10598, U.S.A.                                             *
+C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
 C*                                                                     *
 C*  Version 1.0    July 2008                                           *
 C*                                                                     *
@@ -684,11 +672,7 @@ C***********************************************************************
 C*                                                                     *
 C*  Fortran code written for R package "lmom"                          *
 C*                                                                     *
-C*  J. R. M. HOSKING                                                   *
-C*  IBM RESEARCH DIVISION                                              *
-C*  T. J. WATSON RESEARCH CENTER                                       *
-C*  YORKTOWN HEIGHTS                                                   *
-C*  NEW YORK 10598, U.S.A.                                             *
+C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
 C*                                                                     *
 C*  Version 1.0    July 2008                                           *
 C*                                                                     *
@@ -861,11 +845,7 @@ C***********************************************************************
 C*                                                                     *
 C*  Fortran code written for R package "lmom"                          *
 C*                                                                     *
-C*  J. R. M. HOSKING                                                   *
-C*  IBM RESEARCH DIVISION                                              *
-C*  T. J. WATSON RESEARCH CENTER                                       *
-C*  YORKTOWN HEIGHTS                                                   *
-C*  NEW YORK 10598, U.S.A.                                             *
+C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
 C*                                                                     *
 C*  Version 1.0    July 2008                                           *
 C*                                                                     *
@@ -928,11 +908,7 @@ C***********************************************************************
 C*                                                                     *
 C*  Fortran code written for R package "lmom"                          *
 C*                                                                     *
-C*  J. R. M. HOSKING                                                   *
-C*  IBM RESEARCH DIVISION                                              *
-C*  T. J. WATSON RESEARCH CENTER                                       *
-C*  YORKTOWN HEIGHTS                                                   *
-C*  NEW YORK 10598, U.S.A.                                             *
+C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
 C*                                                                     *
 C*  Version 1.0    July 2008                                           *
 C*                                                                     *
@@ -1041,11 +1017,7 @@ C***********************************************************************
 C*                                                                     *
 C*  Fortran code written for R package "lmom"                          *
 C*                                                                     *
-C*  J. R. M. HOSKING                                                   *
-C*  IBM RESEARCH DIVISION                                              *
-C*  T. J. WATSON RESEARCH CENTER                                       *
-C*  YORKTOWN HEIGHTS                                                   *
-C*  NEW YORK 10598, U.S.A.                                             *
+C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
 C*                                                                     *
 C*  Version 1.0    July 2008                                           *
 C*                                                                     *
@@ -1153,11 +1125,7 @@ C***********************************************************************
 C*                                                                     *
 C*  Fortran code written for R package "lmom"                          *
 C*                                                                     *
-C*  J. R. M. HOSKING                                                   *
-C*  IBM RESEARCH DIVISION                                              *
-C*  T. J. WATSON RESEARCH CENTER                                       *
-C*  YORKTOWN HEIGHTS                                                   *
-C*  NEW YORK 10598, U.S.A.                                             *
+C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
 C*                                                                     *
 C*  Version 1.0    July 2008                                           *
 C*                                                                     *
@@ -1215,11 +1183,7 @@ C***********************************************************************
 C*                                                                     *
 C*  Fortran code written for R package "lmom"                          *
 C*                                                                     *
-C*  J. R. M. HOSKING                                                   *
-C*  IBM RESEARCH DIVISION                                              *
-C*  T. J. WATSON RESEARCH CENTER                                       *
-C*  YORKTOWN HEIGHTS                                                   *
-C*  NEW YORK 10598, U.S.A.                                             *
+C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
 C*                                                                     *
 C*  Version 1.0    July 2008                                           *
 C*                                                                     *
@@ -1295,11 +1259,7 @@ C***********************************************************************
 C*                                                                     *
 C*  Fortran code written for R package "lmom"                          *
 C*                                                                     *
-C*  J. R. M. HOSKING                                                   *
-C*  IBM RESEARCH DIVISION                                              *
-C*  T. J. WATSON RESEARCH CENTER                                       *
-C*  YORKTOWN HEIGHTS                                                   *
-C*  NEW YORK 10598, U.S.A.                                             *
+C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
 C*                                                                     *
 C*  Version 1.0    July 2008                                           *
 C*                                                                     *
@@ -1339,11 +1299,7 @@ C***********************************************************************
 C*                                                                     *
 C*  Fortran code written for R package "lmom"                          *
 C*                                                                     *
-C*  J. R. M. HOSKING                                                   *
-C*  IBM RESEARCH DIVISION                                              *
-C*  T. J. WATSON RESEARCH CENTER                                       *
-C*  YORKTOWN HEIGHTS                                                   *
-C*  NEW YORK 10598, U.S.A.                                             *
+C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
 C*                                                                     *
 C*  Version 1.0    July 2008                                           *
 C*                                                                     *
@@ -1604,11 +1560,7 @@ C***********************************************************************
 C*                                                                     *
 C*  Fortran code written for R package "lmom"                          *
 C*                                                                     *
-C*  J. R. M. HOSKING                                                   *
-C*  IBM RESEARCH DIVISION                                              *
-C*  T. J. WATSON RESEARCH CENTER                                       *
-C*  YORKTOWN HEIGHTS                                                   *
-C*  NEW YORK 10598, U.S.A.                                             *
+C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
 C*                                                                     *
 C*  Version 1.0    July 2008                                           *
 C*                                                                     *
@@ -1684,11 +1636,7 @@ C***********************************************************************
 C*                                                                     *
 C*  Fortran code written for R package "lmomRFA"                       *
 C*                                                                     *
-C*  J. R. M. HOSKING                                                   *
-C*  IBM RESEARCH DIVISION                                              *
-C*  T. J. WATSON RESEARCH CENTER                                       *
-C*  YORKTOWN HEIGHTS                                                   *
-C*  NEW YORK 10598, U.S.A.                                             *
+C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
 C*                                                                     *
 C*  Version 0.5    June 2007                                           *
 C*                                                                     *
@@ -1871,11 +1819,7 @@ C***********************************************************************
 C*                                                                     *
 C*  Fortran code written for R package "lmom"                          *
 C*                                                                     *
-C*  J. R. M. HOSKING                                                   *
-C*  IBM RESEARCH DIVISION                                              *
-C*  T. J. WATSON RESEARCH CENTER                                       *
-C*  YORKTOWN HEIGHTS                                                   *
-C*  NEW YORK 10598, U.S.A.                                             *
+C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
 C*                                                                     *
 C*  Version 1.0    July 2008                                           *
 C*                                                                     *
@@ -1987,11 +1931,7 @@ C*                                                                     *
 C*  FORTRAN CODE WRITTEN FOR INCLUSION IN IBM RESEARCH REPORT RC20525, *
 C*  'FORTRAN ROUTINES FOR USE WITH THE METHOD OF L-MOMENTS, VERSION 3' *
 C*                                                                     *
-C*  J. R. M. HOSKING                                                   *
-C*  IBM RESEARCH DIVISION                                              *
-C*  T. J. WATSON RESEARCH CENTER                                       *
-C*  YORKTOWN HEIGHTS                                                   *
-C*  NEW YORK 10598, U.S.A.                                             *
+C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
 C*                                                                     *
 C*  VERSION 3     AUGUST 1996                                          *
 C*                                                                     *
@@ -2056,11 +1996,7 @@ C*                                                                     *
 C*  FORTRAN CODE WRITTEN FOR INCLUSION IN IBM RESEARCH REPORT RC20525, *
 C*  'FORTRAN ROUTINES FOR USE WITH THE METHOD OF L-MOMENTS, VERSION 3' *
 C*                                                                     *
-C*  J. R. M. HOSKING                                                   *
-C*  IBM RESEARCH DIVISION                                              *
-C*  T. J. WATSON RESEARCH CENTER                                       *
-C*  YORKTOWN HEIGHTS                                                   *
-C*  NEW YORK 10598, U.S.A.                                             *
+C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
 C*                                                                     *
 C*  VERSION 3     AUGUST 1996                                          *
 C*                                                                     *
@@ -2122,11 +2058,7 @@ C*                                                                     *
 C*  FORTRAN CODE WRITTEN FOR INCLUSION IN IBM RESEARCH REPORT RC20525, *
 C*  'FORTRAN ROUTINES FOR USE WITH THE METHOD OF L-MOMENTS, VERSION 3' *
 C*                                                                     *
-C*  J. R. M. HOSKING                                                   *
-C*  IBM RESEARCH DIVISION                                              *
-C*  T. J. WATSON RESEARCH CENTER                                       *
-C*  YORKTOWN HEIGHTS                                                   *
-C*  NEW YORK 10598, U.S.A.                                             *
+C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
 C*                                                                     *
 C*  VERSION 3     AUGUST 1996                                          *
 C*                                                                     *
@@ -2207,11 +2139,7 @@ C*                                                                     *
 C*  FORTRAN CODE WRITTEN FOR INCLUSION IN IBM RESEARCH REPORT RC20525, *
 C*  'FORTRAN ROUTINES FOR USE WITH THE METHOD OF L-MOMENTS, VERSION 3' *
 C*                                                                     *
-C*  J. R. M. HOSKING                                                   *
-C*  IBM RESEARCH DIVISION                                              *
-C*  T. J. WATSON RESEARCH CENTER                                       *
-C*  YORKTOWN HEIGHTS                                                   *
-C*  NEW YORK 10598, U.S.A.                                             *
+C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
 C*                                                                     *
 C*  VERSION 3     AUGUST 1996                                          *
 C*                                                                     *

@@ -66,7 +66,7 @@ with elements as for class \code{"regtst"}, plus the following elements:
   Fortran routines for use with the method of \eqn{L}-moments, Version 3.
   Research Report RC20525, IBM Research Division, Yorktown Heights, N.Y.
 }
-\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
+\author{J. R. M. Hosking \email{jrmhosking@gmail.com}}
 %\note{}
 \seealso{\code{\link{regtst}}}
 \examples{

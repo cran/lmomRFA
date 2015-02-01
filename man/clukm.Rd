@@ -28,7 +28,7 @@ for \code{\link{kmeans}}.}   % .... is this adequate?
   \emph{Regional frequency analysis: an approach based on \eqn{L}-moments}.
   Cambridge University Press.
 }
-\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
+\author{J. R. M. Hosking \email{jrmhosking@gmail.com}}
 \note{
 \code{clukm} is a wrapper for the \R function \code{kmeans}.
 The only difference is that in \code{clukm} the user supplies an initial

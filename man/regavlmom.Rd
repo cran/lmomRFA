@@ -20,7 +20,7 @@ Computes a regional weighted average of \eqn{L}-moments.
 Vector containing the regional average \eqn{L}-moments.
 }
 %\references{}
-\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
+\author{J. R. M. Hosking \email{jrmhosking@gmail.com}}
 %\note{}
 %\seealso{}
 \examples{

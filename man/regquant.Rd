@@ -26,7 +26,7 @@ This is a function that takes one argument,
 which should be a vector of probabilities, and returns a vector of quantiles.
 }
 %\references{}
-\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
+\author{J. R. M. Hosking \email{jrmhosking@gmail.com}}
 %\note{}
 \seealso{\code{\link{regfit}}.}
 \examples{

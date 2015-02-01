@@ -71,7 +71,7 @@ there should be a lot of quantiles!), using graphics parameters
 }
 %\value{}
 %\references{}
-\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
+\author{J. R. M. Hosking \email{jrmhosking@gmail.com}}
 %\note{}
 \seealso{\code{\link{regfit}}, which creates objects of class \code{"rfd"};
 \code{\link{regquantbounds}} and \code{\link{sitequantbounds}},

@@ -147,7 +147,7 @@ An object of class \code{"regtst"}, which is a list with elements as follows.
   \emph{Regional frequency analysis: an approach based on \eqn{L}-moments}.
   Cambridge University Press.
 }
-\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
+\author{J. R. M. Hosking \email{jrmhosking@gmail.com}}
 \note{
   Data frame \code{regdata} may have only six columns,
   i.e. the fifth \eqn{L}-moment ratio \eqn{t_5} may be omitted.

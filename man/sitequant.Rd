@@ -56,7 +56,7 @@ Each function takes a single argument, a vector of probabilities,
 and returns a vector of quantiles.
 }
 %\references{}
-\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
+\author{J. R. M. Hosking \email{jrmhosking@gmail.com}}
 %\note{}
 %\seealso{}
 \examples{

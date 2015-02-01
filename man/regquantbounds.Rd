@@ -112,7 +112,7 @@ a single \code{"rfdbounds"} object is returned.
   \emph{Regional frequency analysis: an approach based on \eqn{L}-moments}.
   Cambridge University Press.
 }
-\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
+\author{J. R. M. Hosking \email{jrmhosking@gmail.com}}
 \note{
 For a region that is confidently believed to be homogeneous,
 the region used to generate the results in \code{relbounds}

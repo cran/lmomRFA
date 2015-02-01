@@ -23,7 +23,7 @@ reglmr(xmom, weight)
 Vector containing the regional average \eqn{L}-moments.
 }
 %\references{}
-\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
+\author{J. R. M. Hosking \email{jrmhosking@gmail.com}}
 \note{This function is deprecated and may be removed
 from a future version of the package.
 Function \code{\link{regavlmom}} is the recommended replacement.

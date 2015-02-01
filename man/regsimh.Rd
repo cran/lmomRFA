@@ -68,7 +68,7 @@ This is a list with the following components:
   \emph{Regional frequency analysis: an approach based on \eqn{L}-moments}.
   Cambridge University Press.
 }
-\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
+\author{J. R. M. Hosking \email{jrmhosking@gmail.com}}
 %\note{}
 \seealso{\code{\link{regtst}} for details of the
 heterogeneity and goodness-of-fit measures.}

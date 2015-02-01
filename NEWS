@@ -5,6 +5,11 @@
        **************************************************
 
 
+Version 3.0-1   2015 Feb  1
+
+   o   Maintainer's email address changed.  No changes to code.
+
+
 Version 3.0     2014 Jan 13
 
    o   Increase in major version number, occasioned by some significant recent
@@ -43,7 +48,7 @@ Version 3.0     2014 Jan 13
        "relbounds.by site".
 
    o   Fixed: sitequantbounds(), when 'sitenames' is missing and 'index' has
-       names, is documented  to use the names of 'index' as the site names
+       names, is documented to use the names of 'index' as the site names
        but did not in fact do so.
 
 

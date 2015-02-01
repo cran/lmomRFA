@@ -2,13 +2,9 @@
 #*                                                                     *
 #*  R code written for the R package "lmomRFA"                         *
 #*                                                                     *
-#*  J. R. M. HOSKING                                                   *
-#*  IBM RESEARCH DIVISION                                              *
-#*  T. J. WATSON RESEARCH CENTER                                       *
-#*  YORKTOWN HEIGHTS                                                   *
-#*  NEW YORK 10598, U.S.A.                                             *
+#*  J. R. M. HOSKING <jrmhosking@gmail.com>                            *
 #*                                                                     *
-#*  Version 2.6    January 2014                                        *
+#*  Version 3.0-1  February 2015                                       *
 #*                                                                     *
 #***********************************************************************
 

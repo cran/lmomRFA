@@ -53,7 +53,7 @@ are different from the defaults for \code{samlmu}.
   Cambridge University Press.
 }
 
-\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
+\author{J. R. M. Hosking \email{jrmhosking@gmail.com}}
 
 \examples{
 data(Maxwind)       # a list

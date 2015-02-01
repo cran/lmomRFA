@@ -47,7 +47,7 @@ Only data frames and numeric matrices can be converted.
 }
 \value{An object of class \code{"regdata"}.}
 %\references{}
-\author{J. R. M. Hosking \email{hosking@us.ibm.com}}
+\author{J. R. M. Hosking \email{jrmhosking@gmail.com}}
 %\note{}
 %\seealso{}
 \examples{
