@@ -1,7 +1,7 @@
 import(lmom)
 import(stats)
 importFrom(graphics, matlines)
-useDynLib(lmomRFA)
+useDynLib(lmomRFA, .registration=TRUE, .fixes="RegSym_")
 export(cluagg)
 export(cluinf)
 export(clukm)

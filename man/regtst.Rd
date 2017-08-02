@@ -88,6 +88,15 @@ using \code{nsim} replications of the region.
 Results will vary between invocations of \code{regtst}
 with different seeds for the random-number generator.
 
+In the homogeneous region used in the simulations, the sites have a
+kappa distribution, fitted to the regional average \eqn{L}-moment ratios
+of the data in \code{regdata}.  The kappa fit may fail if the regional average
+\eqn{L}-kurtosis is high relative to the regional average \eqn{L}-skewness.
+In this case a kappa distribution is fitted with shape parameter
+\eqn{h} constrained to be \eqn{-1} (i.e., a generalized logistic distribution);
+this gives the largest possible \eqn{L}-kurtosis value for a kappa distribution
+with given \eqn{L}-skewness.
+
 \code{regtst} and \code{regtst.s} are functionally identical.
 \code{regtst} calls a Fortran routine internally and is faster,
 typically by a factor of 3 or 4.

@@ -150,7 +150,7 @@ regtst<-function(regdata, nsim=1000){
   maxrec<-max(len)
   xmom <- if (ncol(regdata)==6) t(cbind(regdata[,3:6],2)) else t(regdata[,3:7])
 
-  fort<-.Fortran("regtst",PACKAGE="lmomRFA",
+  fort<-.Fortran(RegSym_regtst, PACKAGE="lmomRFA",
     nsites=as.integer(nsites),
     len=as.integer(len),
     xmom=as.double(xmom),
@@ -276,7 +276,7 @@ regtst.s<-function(regdata, nsim=1000) {
     rpara <- if (rmom[4]<=(1+5*rmom[3]^2)/6) pelkap(rmom) else c(pelglo(rmom),-1)
 
     # Fast version of quakap(), for use in inner loop
-    my.quakap<-function(f,para) .Fortran("qkap",PACKAGE="lmomRFA",
+    my.quakap<-function(f,para) .Fortran(RegSym_qkap, PACKAGE="lmomRFA",
         as.double(f),length(f),as.double(para))[[1]]
 
     re<-replicate(nsim, {
@@ -300,7 +300,7 @@ regtst.s<-function(regdata, nsim=1000) {
     t4bias<-re.bar[4]-rmom[4]
     t4sd<-re.sd[4]
 
-    sw<-sweep(t(xmom[,1:3]),1,rmom[2:4])
+    sw<-sweep(t(xmom[,1:3,drop=FALSE]),1,rmom[2:4])
     v1<-sqrt(weighted.mean(sw[1,]^2,w=len))
     v2<-weighted.mean(sqrt(sw[1,]^2+sw[2,]^2),w=len)
     v3<-weighted.mean(sqrt(sw[2,]^2+sw[3,]^2),w=len)
@@ -317,6 +317,7 @@ regtst.s<-function(regdata, nsim=1000) {
   out<-list(data=regdata, nsim=nsim, D=D, Dcrit=Dcrit,
     rmom=rmom, rpara=rpara, vobs=vobs, vbar=vbar, vsd=vsd, H=H,
     para=para, t4fit=t4fit, Z=Z)
+  if (nsites==1) out$vobs<-out$vbar<-out$vsd<-out$H<-rep(0,3)
   names(out$rmom)<-c("mean", "t", "t_3", "t_4", "t_5")
   class(out)<-"regtst"
   return(out)

@@ -5,6 +5,19 @@
        **************************************************
 
 
+Version 3.1     2017 Aug  1
+
+   o   "Native routines" are now "registered".
+
+   o   The simulation procedure used in regtst() involves fitting a kappa
+       distribution to the regional data.  The kappa fit may fail, in which
+       case a generalized logistic distribution is used instead.  This has
+       always been the case, but is now documented.
+
+   o   Fixed: regtst.s() would give an error for a region containing a single
+       site.
+
+
 Version 3.0-1   2015 Feb  1
 
    o   Maintainer's email address changed.  No changes to code.
