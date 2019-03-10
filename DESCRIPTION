@@ -1,6 +1,6 @@
 Package: lmomRFA
-Version: 3.1
-Date: 2017-08-01
+Version: 3.2
+Date: 2019-03-10
 Title: Regional Frequency Analysis using L-Moments
 Author: J. R. M. Hosking
 Maintainer: J. R. M. Hosking <jrmhosking@gmail.com>
@@ -12,6 +12,6 @@ Imports: stats, graphics
 License: Common Public License Version 1.0
 LazyData: yes
 NeedsCompilation: yes
-Packaged: 2017-08-02 01:14:03 UTC; hosking
+Packaged: 2019-03-10 20:43:27 UTC; J
 Repository: CRAN
-Date/Publication: 2017-08-02 05:13:16 UTC
+Date/Publication: 2019-03-10 21:10:03 UTC

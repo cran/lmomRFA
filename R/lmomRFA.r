@@ -23,7 +23,7 @@ cluagg<-function(x, method="ward") {
 }
 
 cluinf<-function(merge, nclust) {
-  if (is.list(merge) && names(merge)==c("merge","wgss")) merge<-merge$merge
+  if (is.list(merge) && identical(names(merge),c("merge","wgss"))) merge<-merge$merge
   n<-nrow(merge)+1
   vec<-1:n
   for (i in 1:(n-nclust)) vec[vec==merge[i,2] ] <- vec[merge[i,1] ]
