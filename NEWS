@@ -5,6 +5,18 @@
        **************************************************
 
 
+Version 3.3     2019 Dec  5
+
+   o   Fixed: evplot.rfd(), when adding a site quantile function to an existing
+       plot, would plot an incorrectly scaled version of the quantile function
+       (it would plot the unscaled quantiles of the regional frequency
+       distribution rather than applying the appropriate site-specific scale
+       factor ("index flood")).
+
+   o   [Invisible to users] Internal code no longer assumes that class() of a
+       matrix has length 1 (would have caused error in R version 4.0.0).
+
+
 Version 3.2     2019 Mar 10
 
    o   Fixed: in cluinf(), incorrect test of whether argument 'merge' could be

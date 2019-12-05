@@ -4,7 +4,7 @@
 #*                                                                     *
 #*  J. R. M. HOSKING <jrmhosking@gmail.com>                            *
 #*                                                                     *
-#*  Version 3.0-1  February 2015                                       *
+#*  Version 3.3    December 2019                                       *
 #*                                                                     *
 #***********************************************************************
 
@@ -583,8 +583,11 @@ regsimh <- function(qfunc, para, cor=0, nrec, nrep=500, nsim=500) {
    q2qua <- function(f) function(u,p) do.call(f,c(list(u),as.list(p)))
 
    # We don't use the reverse transformation, but here it is anyway
+   #
    #   qua2q <- function(f) function(u,...) mapply(f,u,mapply(c,...,SIMPLIFY=FALSE))
+   #
    # or (much faster if each arg in '...' is a single number)
+   #
    #   qua2q <- function(f) function(u,...) {
    #     if (length(c(...))==length(list(...))) f(u,c(...))
    #     else mapply(f,u,mapply(c,...,SIMPLIFY=FALSE))
@@ -594,8 +597,10 @@ regsimh <- function(qfunc, para, cor=0, nrec, nrep=500, nsim=500) {
 
    qfunc<-lapply(qfunc,function(f) if (length(formals(f))==2) f else q2qua(f))
 
-   # qflocal() is a function with 3 arguments that generates a function call
-   # its first argument with
+   # qflocal() is a function with 3 arguments that generates a function call to
+   # its first argument 'f' with the other arguments of qflocal() passed to f().
+   # Thus mapply(qflocal,qfunc,ulist,para) generates a set of calls
+   # qfunc[[i]](ulist[[i]],para[[i]]).
 
    qflocal <- function(f,u,p) f(u,p)
 
@@ -628,7 +633,7 @@ regsimh <- function(qfunc, para, cor=0, nrec, nrep=500, nsim=500) {
         cor<-diag(1-avcor,nsites)+avcor
       }
       cholcor<-try(chol(cor),silent=TRUE)
-      if (class(cholcor)=="try-error") stop("Correlation matrix is not positive definite")
+      if (inherits(cholcor,"try-error")) stop("Correlation matrix is not positive definite")
     }
 
    # Simulation loop
@@ -762,7 +767,7 @@ regsimq<-function(qfunc, para, cor=0, index=NULL, nrec, nrep=10000,
       cor<-diag(1-avcor,nsites)+avcor
     }
     cholcor<-try(chol(cor),silent=TRUE)
-    if (class(cholcor)=="try-error") stop("Correlation matrix is not positive definite")
+    if (inherits(cholcor,"try-error")) stop("Correlation matrix is not positive definite")
   }
 
   # Compute the index flood values if necessary
@@ -1119,7 +1124,7 @@ evplot.rfd<-function(y, ybounds, npoints=101, add=FALSE,
   }
   #
   if (add)
-    evdistq(y$qfunc, npoints=npoints, type=type, lty=lty[1], col=col[1], ...)
+    evdistq(my.qfunc, npoints=npoints, type=type, lty=lty[1], col=col[1], ...)
   else
     evplot(, qfunc=my.qfunc, npoints=npoints, plim=plim, xlim=xlim, ylim=ylim,
       type=type, xlab=xlab, ylab=ylab, rp.axis=rp.axis,
