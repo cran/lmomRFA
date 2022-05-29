@@ -5,6 +5,19 @@
        **************************************************
 
 
+Version 3.4     2022 May 29
+
+   o   In the value returned by regfit(), component 'qfunc' (a function) now
+       has a smaller environment and uses less memory.
+
+   o   Documentation of regsamlmu() notes that it gives different results from
+       the corresponding program in the LMOMENTS Fortran package, version 3.04.
+
+   o   Fixed: regsimq() was computing the relative RMSE for the regional growth
+       curve incorrectly.  The error was small, typically less than 1%, and
+       always in the positive direction.
+
+
 Version 3.3     2019 Dec  5
 
    o   Fixed: evplot.rfd(), when adding a site quantile function to an existing

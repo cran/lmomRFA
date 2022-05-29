@@ -483,7 +483,7 @@ print.summary.regtst<-function(x, decimals, ...) {
 regfit<-function(regdata, dist) {
 ## Fit a regional frequency distribution
   regdata<-as.regdata(regdata)
-
+#
   if (!is.character(dist) || length(dist)!=1)
     stop("'dist' must be a character string")
   pelname<-paste("pel",dist,sep="")
@@ -493,14 +493,16 @@ regfit<-function(regdata, dist) {
   if (!exists(quaname,mode="function",envir=pf)) stop('function "',quaname,'" not found')
   pelfun<-get(pelname,mode="function",envir=pf)
   quafun<-get(quaname,mode="function",envir=pf)
-
+#
   rmom<-regavlmom(regdata)
   para<-pelfun(rmom)
+  qfunc<-function(f) quafun(f,para)
+  environment(qfunc)<-as.environment(list(quafun=quafun,para=para))
   out<-structure(
     list(
       dist=dist,
       para=para,
-      qfunc=function(f) quafun(f,para),
+      qfunc=qfunc,
       rmom=rmom,
       index=structure(regdata[[3]],names=regdata[[1]])),
     class="rfd")
@@ -564,7 +566,7 @@ sitequant<-function(f, rfd, sitenames, index, drop=TRUE) {
   outer(index,regquant(f,rfd))[,,drop=drop]
 }
 
-regsimh <- function(qfunc, para, cor=0, nrec, nrep=500, nsim=500) {
+regsimh<-function(qfunc, para, cor=0, nrec, nrep=500, nsim=500) {
 ## Simulate H and Z
    nsites<-length(nrec)
    nmax<-max(nrec)
@@ -914,9 +916,10 @@ regsimq<-function(qfunc, para, cor=0, index=NULL, nrec, nrep=10000,
 
   sa<-sapply(seq(along=f), function(iq) { # For each quantile F:
     ou<-outer(sim.rgc[iq,,drop=FALSE],true.asgc[iq,,drop=FALSE],"/")
-                                         # - matrix of ratios qhat^{[m]}(F)/q_i(F) (F fixed, i varying)
-    rr<-sqrt(mean((ou-1)^2))             # - rel. RMSE of qhat as estimator of q_i
-    qq<-my.quantile(ou,probs=boundprob)  # - quantiles of the ratio qhat/q_i
+                                          # - matrix of ratios qhat^{[m]}(F)/q_i(F) (F fixed, i varying)
+    rr<-mean(apply(ou-1,2,function(x) sqrt(mean(x^2))))
+                                          # - rel. RMSE of qhat as estimator of q_i
+    qq<-my.quantile(ou,probs=boundprob)   # - quantiles of the ratio qhat/q_i
     c(rr,qq)
   })
   rel.RMSE<-sa[1,]
@@ -931,7 +934,7 @@ regsimq<-function(qfunc, para, cor=0, index=NULL, nrec, nrep=10000,
     true.asgc.permed<-true.asgc[,sim.perm[isite,] ] # Column j is the growth curve that was used for site 'isite' at repetition j
     rgcratio<-sim.rgc/true.asgc.permed              # Matrix of ratios qhat^{[m]}(F)/q_i(F) (F varying, i fixed)
     meanratio<-sim.sitemeans[isite,]                # Ratio of sample to population mean (sample was generated from distribution with mean 1, so no need to divide by index[isite])
-    ratio<-rgcratio*matrix(meanratio,nq,nrep,byrow=TRUE) # Matrix of ratios Qhat_i^{[m]}(F)/q_i(F) (F varying, i fixed)
+    ratio<-rgcratio*matrix(meanratio,nq,nrep,byrow=TRUE) # Matrix of ratios Qhat_i^{[m]}(F)/Q_i(F) (F varying, i fixed)
     rel.RMSE<-sqrt(rowMeans((ratio-1)^2))
     rel.bounds<-t(apply(ratio,1,my.quantile,probs=boundprob))
     dimnames(rel.bounds)[[2]]<-boundprob

@@ -26,6 +26,8 @@ regfit(regdata, dist)
 The function computes regional average \eqn{L}-moments
 (by calling \code{regavlmom}) and fits a probability distribution
 to the regional average \eqn{L}-moments.
+This distribution has mean 1, i.e., the index flood is the
+mean of the distribution.
 
 For distribution \code{dist} there should exist a function to estimate
 the parameters of the distribution given a set of \eqn{L}-moments.

@@ -45,6 +45,12 @@ Hosking and Wallis (1997).
 Note that the number of \eqn{L}-moments and the choice
 of whether to return \eqn{L}-CV or \eqn{L}-scale
 are different from the defaults for \code{samlmu}.
+
+Users of the LMOMENTS Fortran package, version 3.04, should note that
+its \code{PROGRAM XFIT} by default uses plotting-position estimators
+of \eqn{L}-moment ratios, which give different results from the
+\dQuote{unbiased} estimators used by \code{regsamlmu}
+(and by all other functions in package \pkg{lmomRFA}).
 }
 
 \references{
