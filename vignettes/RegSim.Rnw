@@ -1,0 +1,9 @@
+\documentclass{article}
+\usepackage{pdfpages}
+%\VignetteIndexEntry{Notes for function regsimq}
+%
+\begin{document}
+%
+\includepdf[pages=-, fitpaper=true]{RegionalSimulation.pdf}
+%
+\end{document}

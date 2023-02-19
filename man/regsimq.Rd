@@ -37,8 +37,10 @@ regsimq(qfunc, para, cor = 0, index = NULL, nrec, nrep = 10000,
         (\dQuote{index flood}) at each site.  Can be:
         a vector, containing the values at each site;
         a constant, which will be taken to be the index flood value at each site;
-        or (the default) \code{NULL}, in which case the index flood will be
-        computed by numerical integration of the quantile function.}
+        or (the default) \code{NULL}, in which case the index floods at each site
+        will be taken to be the means of the quantile functions implied by
+        \code{qfunc} and \code{para}, and will be computed
+        by numerical integration of those quantile functions.}
   \item{nrec}{Numeric vector containing the record lengths at each site.}
   \item{nrep}{Number of simulated regions.}
   \item{fit}{Character string specifying the distribution to be fitted.
@@ -58,16 +60,24 @@ regsimq(qfunc, para, cor = 0, index = NULL, nrec, nrep = 10000,
 }
 \details{
 A  realization of data from a region is generated as follows.
-The frequency distributions at the sites (specified by
-arguments \code{qfunc} and \code{para}) are randomly permuted,
-and data are simulated from these frequency distributions
+The frequency distributions at sites (specified by
+arguments \code{qfunc} and \code{para}) are expressed
+as \eqn{Q_i(F)=\mu_i q_i(F)}{Q_i(F)=mu_i q_i(F)} where \eqn{\mu_i}{mu_i} is the site-specific scale factor
+(\dQuote{index flood}) and \eqn{q_i(F)} is the at-site growth curve.
+At each simulation run the at-site growth curves of each site
+are randomly permuted, and are scaled by the (unpermuted)
+index flood values for the sites.
+Data are simulated from these frequency distributions,
 with inter-site correlation specified by argument \code{cor}
 and record lengths at each site specified by argument \code{nrec}.
 The regional frequency distribution specified by argument \code{fit}
 is then fitted to the simulated data, as in function \code{regfit}.
 The procedure is as described in Hosking and Wallis (1997), Table 6.1,
-except that the permutation of frequency distributions is a later
+except that the permutation of at-site growth curves is a later
 modification, intended to give more realistic sets of simulated data.
+For more details, including exact definitions of quantities computed
+in the simulation and returned by functions \code{regsimq},
+\code{regquantbounds}, and \code{regsitebounds}, see vignette \code{RegSim}.
 
 From each realization the sample mean values and estimates of the
 quantiles of the regional growth curve, for nonexceedance probabilities
@@ -117,6 +127,7 @@ This is a list with the following components:
       whose accuracy is to be estimated.  A copy of argument \code{f}.}
 \item{boundprob}{Vector of probabilities corresponding to the error bounds.
       A copy of argument \code{boundprob}.}
+\item{nrep}{Number of simulated regions.}
 \item{relbounds.rgc}{Data frame containing the relative RMSE and
       error bounds for the regional growth curve. It has columns
       \code{"f"}, probabilities corresponding to each quantile,
@@ -128,14 +139,22 @@ This is a list with the following components:
 \item{relbounds.by.site}{List of \code{length(nrec)} data frames.
       Each data frame contains the relative RMSE and error bounds
       for quantiles at one site, and has the same structure
-      as the \code{relbounds.rgc} component of the return value.}
-\item{sim.rgcratio}{If \code{save} is \code{TRUE}, a matrix of dimension
-      \code{length(f)} \eqn{\times}{by} \code{nrep}, containing the simulated
-      values of the ratio of the estimated to the true regional growth curve
+      as component \code{relbounds.rgc} of the return value.}
+\item{true.asgc}{If \code{save} is \code{TRUE}, a matrix of dimension
+      \code{length(f)} \eqn{\times}{by} \code{length(nrec)}, containing
+      values of the at-site growth curves (quantile functions at each site,
+      divided by the site-specific scale factors)
       for quantiles corresponding to probabilities in \code{f}.
 
       If \code{save} is \code{FALSE}, list element
-      \code{sim.rgcratio} is \code{NULL}.}
+      \code{true.asgc} is \code{NULL}.}
+\item{sim.rgc}{If \code{save} is \code{TRUE}, a matrix of dimension
+      \code{length(f)} \eqn{\times}{by} \code{nrep}, containing
+      the simulated values of the estimated regional growth curve
+      for quantiles corresponding to probabilities in \code{f}.
+
+      If \code{save} is \code{FALSE}, list element
+      \code{sim.rgc} is \code{NULL}.}
 }
 \references{
   Hosking, J. R. M., and Wallis, J. R. (1997).

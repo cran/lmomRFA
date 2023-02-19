@@ -5,6 +5,51 @@
        **************************************************
 
 
+Version 3.5    2023 Feb 19
+
+   o   New vignette "RegSim".
+
+   o   In regsimq(), regquantbounds(), and sitequantbounds(), there are changes
+       in calculation methods for accuracy measures (RMSEs and error bounds).
+       For the relative RMSE of the regional growth curve (computed by
+       regsimq()), the absolute RMSE of the regional growth curve (computed by
+       regquantbounds()), and for RMSEs and error bounds of quantiles at sites
+       not used in regional estimation (computed by sitequantbounds() with
+       'index' and 'seindex' specified), the computational method is different
+       from that used in previous versions of the package. The new approach
+       is fully defined in vignette "RegSim". It uses more information from the
+       simulations and should be more accurate, though results are typically
+       little different from prior versions. The calculation method for RMSEs
+       and error bounds of quantiles at sites used in regional estimation
+       (computed by sitequantbounds() with 'index' not specified) is unchanged.
+
+       Note also that in regsimq(), version 3.4, the relative RMSE of the
+       regional growth curve was computed incorrectly. The relative RMSE was
+       underestimated, though typically only by a small amount. The RMSE
+       returned by regquantbounds() is a scaled version of the relative RMSE
+       computed by regsimq() and was similarly affected. A fix of this issue
+       was superseded by the change in calculation method noted above.
+
+   o   regsimq()'s return value gains elements "nrep", "true.asgc", and
+       "sim.rgc", but no longer has an element "sim.rgcratio".
+
+   o   In sitequantbounds() when 'index' and 'seindex' are both specified, the
+       distribution of the relative estimation error of the index flood is now
+       assumed to be gamma rather than lognormal. This is felt (by the package
+       maintainer) to be more realistic for most practical applications of
+       regional frequency analysis.
+
+   o   [Invisible to users] Changes to internal Fortran code:
+       * Added routine SAMLM (from package "lmom", version 2.9).
+       * Removed routines SAMLMU, SORT.
+       * Minor changes to routines REGTST, LMRGPA.
+
+   o   Fixed: print.regsimq() of the result of a call to regsimq() with
+       'save=FALSE' would not print the number of simulations.
+
+   o   Fixed: regsimq() would give an error if 'boundprob' had only 1 element.
+
+
 Version 3.4     2022 May 29
 
    o   In the value returned by regfit(), component 'qfunc' (a function) now
@@ -67,7 +112,7 @@ Version 3.0     2014 Jan 13
        Results returned by regsimq() in earlier versions of the package should
        be regarded as unreliable.
 
-   o   Now explictly imports standard package "stats", and functions from
+   o   Now explicitly imports standard package "stats", and functions from
        standard package "graphics".
 
    o   In regfit() and regsimq(), the search path used to find the functions

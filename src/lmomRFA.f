@@ -8,7 +8,7 @@ C    QKAP
 C    REGTST
 C
 C  The following routines are called from other Fortran routines.
-C  Those marked (=) are the same as in the lmom package.
+C  Those marked (=) are the same as in R package "lmom".
 C
 C    DERF    (=)
 C    DIGAMD  (=)
@@ -26,11 +26,10 @@ C    PELKAP  (=)
 C    PELPE3  (=)
 C    PELWAK
 C    QKAP
-C    SAMLMU  (=)
-C    SORT
+C    SAMLM   (in separate file samlm.f)
 C
-C  Note that routine PELWAK in this package is not the same as in the
-C  lmom R package.  The version in this package retains the behaviour
+C  Note that routine PELWAK in this package is not the same as in R
+C  package "lmom".  The version in this package retains the behaviour
 C  of PELWAK in the LMOMENTS Fortran package: if a fit using all five
 C  parameters fails, an attempt is made to fit the distribution with
 C  four parameters and lower bound zero.
@@ -50,24 +49,30 @@ C*  routines for use with the method of L-moments, version 3', and its *
 C*  updates.                                                           *
 C*                                                                     *
 C*  Version 2.6    January 2014                                        *
+C*  * Summary of differences from the Fortran version                  *
+C*    - Omit arguments NAMES,NPROB,PROB,KPRINT,KOUT,A,B,SEED           *
+C*    - Add arguments RPARA,T4FIT,WORK,X,MAXREC                        *
+C*    - No printing                                                    *
+C*    - Return (as *output* arguments) all numbers that used to be     *
+C*      printed                                                        *
+C*    - No use of PARAMETERs                                           *
+C*    - Calls to PELxxx routines are to the versions adapted for R,    *
+C*      so gain an IFAIL parameter                                     *
+C*    - Compute sample L-moments via SAMLMU, not SAMLMR                *
+C*    - Don't stop when unable to invert SS matrix                     *
+C*    - Fit the candidate (and Wakeby) distributions even when         *
+C*      NSIM.EQ.0                                                      *
+C*    - Compute T4FIT more accurately                                  *
+C*    - Don't compute quantiles of candidate distributions             *
+C*    - Use R's random-number generator, via C routines RANGET,        *
+C*      CURAND, RANPUT                                                 *
+C*                                                                     *
+C*  Version 3.5    February 2023                                       *
+C*  * Use routine SAMLM from current package "lmom" rather than        *
+C*    routine SAMLMU from an earlier version                           *
+C*  * No need to call routine SORT                                     *
 C*                                                                     *
 C***********************************************************************
-C
-C  Summary of differences from the Fortran version
-C  * Omit arguments NAMES,NPROB,PROB,KPRINT,KOUT,A,B,SEED
-C  * Add arguments RPARA,T4FIT,WORK,X,MAXREC
-C  * No printing
-C  * Return (as *output* arguments) all numbers that used to be printed
-C  * No use of PARAMETERs
-C  * Calls to PELxxx routines are to the versions adapted for R,
-C    so gain an IFAIL parameter
-C  * Compute sample L-moments via SAMLMU, not SAMLMR
-C  * Don't stop when unable to invert SS matrix
-C  * Fit the candidate (and Wakeby) distributions even when NSIM.EQ.0
-C  * Compute T4FIT more accurately
-C  * Don't compute quantiles of candidate distributions
-C  * Use R's random-number generator, via C routines RANGET,CURAND,RANPUT
-C
 C  CALCULATES THREE STATISTICS USEFUL IN REGIONAL FREQUENCY ANALYSIS
 C
 C  DISCORDANCY MEASURE, D(I), FOR INDIVIDUAL SITES IN A REGION.
@@ -150,10 +155,9 @@ C                  record lengths.
 C
 C  OTHER FORTRAN ROUTINES USED: DERF,DIGAMD,DLGAMA,LMRGEV,LMRGLO,LMRGNO,
 C    LMRGPA,LMRPE3,PELGEV,PELGLO,PELGNO,PELGPA,PELKAP,PELPE3,PELWAK,
-C    QKAP,SAMLMU,SORT
+C    QKAP,QSORT3(from R's API),SAMLM
 C
 C  C ROUTINES USED: CURAND,RANGET,RANPUT
-C
 C
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       DOUBLE PRECISION D(NSITES),H(3),PARA(5,6),
@@ -250,7 +254,6 @@ C
       D(I)=D(I)*FACTOR
       WORK(I,1)=D(I)
   130 CONTINUE
-      CALL SORT(WORK(1,1),NSITES)
       GOTO 140
   135 DO 138 I=1,NSITES
   138 D(I)=ONE
@@ -307,8 +310,7 @@ C
 C
 C         FIND L-MOMENTS OF SIMULATED DATA
 C
-      CALL SORT(X,NREC)
-      CALL SAMLMU(X,NREC,TMOM,4,IFAIL)
+      CALL SAMLM(X,NREC,TMOM,4,1,1)
       CV=TMOM(2)/TMOM(1)
       WORK(I,1)=CV
       WORK(I,2)=TMOM(3)
@@ -849,6 +851,9 @@ C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
 C*                                                                     *
 C*  Version 1.0    July 2008                                           *
 C*                                                                     *
+C*  Version 2.3    February 2014                                       *
+C*  * PARA now has dimension 3 (was 5)                                 *
+C*                                                                     *
 C***********************************************************************
 C
 C  L-MOMENT RATIOS FOR THE GENERALIZED PARETO DISTRIBUTION
@@ -862,7 +867,7 @@ C                  LAMBDA-1, LAMBDA-2, TAU-3, TAU-4, ... .
 C  NMOM   * INPUT* NUMBER OF L-MOMENTS TO BE FOUND. AT MOST 20.
 C
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
-      DOUBLE PRECISION PARA(5),XMOM(NMOM)
+      DOUBLE PRECISION PARA(3),XMOM(NMOM)
       DATA ZERO/0D0/,ONE/1D0/,TWO/2D0/
 C
       IFAIL=0
@@ -1813,117 +1818,6 @@ C
       END IF
       RETURN
       END
-C===================================================== SAMLMU.FOR
-      SUBROUTINE SAMLMU(X,N,XMOM,NMOM,IFAIL)
-C***********************************************************************
-C*                                                                     *
-C*  Fortran code written for R package "lmom"                          *
-C*                                                                     *
-C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
-C*                                                                     *
-C*  Version 1.0    July 2008                                           *
-C*                                                                     *
-C***********************************************************************
-C
-C  SAMPLE L-MOMENTS OF A DATA ARRAY
-C
-C  PARAMETERS OF ROUTINE:
-C  X      * INPUT* ARRAY OF LENGTH N. CONTAINS THE DATA, IN ASCENDING
-C                  ORDER.
-C  N      * INPUT* NUMBER OF DATA VALUES
-C  XMOM   *OUTPUT* ARRAY OF LENGTH NMOM. CONTAINS THE SAMPLE L-MOMENTS,
-C                  STORED AS DESCRIBED BELOW.
-C  NMOM   * INPUT* NUMBER OF L-MOMENTS TO BE FOUND.
-C
-      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
-C        Note: Fortran 77 would require dimension of COEF to be known
-C        at compile time.
-      DOUBLE PRECISION X(N),XMOM(NMOM),COEF(2,NMOM)
-      DATA ZERO/0D0/,ONE/1D0/,TWO/2D0/
-C
-      DN=N
-      DO 10 J=1,NMOM
-   10 XMOM(J)=ZERO
-      IF(NMOM.LE.2)GOTO 100
-C
-C         UNBIASED ESTIMATES OF L-MOMENTS -- THE 'DO 30' LOOP
-C         RECURSIVELY CALCULATES DISCRETE LEGENDRE POLYNOMIALS, VIA
-C         EQ.(9) OF NEUMAN AND SCHONBACH (1974, INT.J.NUM.METH.ENG.)
-C
-      DO 20 J=3,NMOM
-      TEMP=ONE/DFLOAT((J-1)*(N-J+1))
-      COEF(1,J)=DFLOAT(J+J-3)*TEMP
-      COEF(2,J)=DFLOAT((J-2)*(N+J-2))*TEMP
-   20 CONTINUE
-      TEMP=-DN-ONE
-      CONST=ONE/(DN-ONE)
-      NHALF=N/2
-      DO 40 I=1,NHALF
-      TEMP=TEMP+TWO
-      XI=X(I)
-      XII=X(N+1-I)
-      TERMP=XI+XII
-      TERMN=XI-XII
-      XMOM(1)=XMOM(1)+TERMP
-      S1=ONE
-      S=TEMP*CONST
-      XMOM(2)=XMOM(2)+S*TERMN
-      DO 30 J=3,NMOM,2
-      S2=S1
-      S1=S
-      S=COEF(1,J)*TEMP*S1-COEF(2,J)*S2
-      XMOM(J)=XMOM(J)+S*TERMP
-      IF(J.EQ.NMOM)GOTO 30
-      JJ=J+1
-      S2=S1
-      S1=S
-      S=COEF(1,JJ)*TEMP*S1-COEF(2,JJ)*S2
-      XMOM(JJ)=XMOM(JJ)+S*TERMN
-   30 CONTINUE
-   40 CONTINUE
-      IF(N.EQ.NHALF+NHALF)GOTO 60
-      TERM=X(NHALF+1)
-      S=ONE
-      XMOM(1)=XMOM(1)+TERM
-      DO 50 J=3,NMOM,2
-      S=-COEF(2,J)*S
-      XMOM(J)=XMOM(J)+S*TERM
-   50 CONTINUE
-C
-C         L-MOMENT RATIOS
-C
-   60 CONTINUE
-      XMOM(1)=XMOM(1)/DN
-      IF(XMOM(2).EQ.ZERO)GOTO 1010
-      DO 70 J=3,NMOM
-   70 XMOM(J)=XMOM(J)/XMOM(2)
-      XMOM(2)=XMOM(2)/DN
-      RETURN
-C
-C         AT MOST TWO L-MOMENTS
-C
-  100 CONTINUE
-      SUM1=ZERO
-      SUM2=ZERO
-      TEMP=-DN+ONE
-      DO 110 I=1,N
-      SUM1=SUM1+X(I)
-      SUM2=SUM2+X(I)*TEMP
-      TEMP=TEMP+TWO
-  110 CONTINUE
-      XMOM(1)=SUM1/DN
-      IF(NMOM.EQ.1)RETURN
-      XMOM(2)=SUM2/(DN*(DN-ONE))
-      RETURN
-C
- 1010 IFAIL=7010
-      DO 1020 J=2,NMOM
- 1020 XMOM(J)=ZERO
-      RETURN
-C
-C7010 FORMAT(' *** ERROR *** ROUTINE SAMLMU :',
-C    *  ' ALL DATA VALUES EQUAL')
-      END
 C===================================================== DERF.FOR
       DOUBLE PRECISION FUNCTION DERF(X)
 C***********************************************************************
@@ -1993,12 +1887,11 @@ C===================================================== DIGAMD.FOR
       DOUBLE PRECISION FUNCTION DIGAMD(X)
 C***********************************************************************
 C*                                                                     *
-C*  FORTRAN CODE WRITTEN FOR INCLUSION IN IBM RESEARCH REPORT RC20525, *
-C*  'FORTRAN ROUTINES FOR USE WITH THE METHOD OF L-MOMENTS, VERSION 3' *
+C*  Fortran code written for R package "lmom"                          *
 C*                                                                     *
 C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
 C*                                                                     *
-C*  VERSION 3     AUGUST 1996                                          *
+C*  Version 1.6    January 2012                                        *
 C*                                                                     *
 C***********************************************************************
 C
@@ -2044,8 +1937,8 @@ C
       DIGAMD=DIGAMD-SUM
       RETURN
 C
- 1000 CONTINUE
-C     WRITE(6,7000)X
+C1000 WRITE(6,7000)X
+ 1000 DIGAMD=1D300
       RETURN
 C
 C7000 FORMAT(' *** ERROR *** ROUTINE DIGAMD :',
@@ -2055,12 +1948,11 @@ C===================================================== DLGAMA.FOR
       DOUBLE PRECISION FUNCTION DLGAMA(X)
 C***********************************************************************
 C*                                                                     *
-C*  FORTRAN CODE WRITTEN FOR INCLUSION IN IBM RESEARCH REPORT RC20525, *
-C*  'FORTRAN ROUTINES FOR USE WITH THE METHOD OF L-MOMENTS, VERSION 3' *
+C*  Fortran code written for R package "lmom"                          *
 C*                                                                     *
 C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
 C*                                                                     *
-C*  VERSION 3     AUGUST 1996                                          *
+C*  Version 1.6    January 2012                                        *
 C*                                                                     *
 C***********************************************************************
 C
@@ -2125,58 +2017,10 @@ C
    70 DLGAMA=SUM1+SUM2
       RETURN
 C
- 1000 CONTINUE
-C     WRITE(6,7000)X
+C1000 WRITE(6,7000)X
+ 1000 DLGAMA=1D300
       RETURN
 C
 C7000 FORMAT(' *** ERROR *** ROUTINE DLGAMA :',
 C    *  ' ARGUMENT OUT OF RANGE :',D24.16)
-      END
-C===================================================== SORT.FOR
-      SUBROUTINE SORT(X,N)
-C***********************************************************************
-C*                                                                     *
-C*  FORTRAN CODE WRITTEN FOR INCLUSION IN IBM RESEARCH REPORT RC20525, *
-C*  'FORTRAN ROUTINES FOR USE WITH THE METHOD OF L-MOMENTS, VERSION 3' *
-C*                                                                     *
-C*  J. R. M. Hosking <jrmhosking@gmail.com>                            *
-C*                                                                     *
-C*  VERSION 3     AUGUST 1996                                          *
-C*                                                                     *
-C***********************************************************************
-C
-C  SORTS THE ARRAY X INTO ASCENDING ORDER
-C
-C  PARAMETERS OF ROUTINE:
-C  X      *IN/OUT* ARRAY OF LENGTH N. CONTAINS THE NUMBERS TO BE SORTED.
-C                  ON EXIT, CONTAINS THE SORTED NUMBERS.
-C  N      * INPUT* NUMBER OF ELEMENTS TO BE SORTED
-C
-C  METHOD USED IS SHELL SORT WITH SEQUENCE OF INCREMENTS AS IN
-C  D.F.KNUTH (1969) 'THE ART OF COMPUTER PROGRAMMING', VOL.3, P.95
-C
-      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
-      DOUBLE PRECISION X(N)
-      IF(N.LE.1)RETURN
-      J=4
-      DO 10 I=1,100
-      J=3*J+1
-      IF(J.GE.N)GOTO 20
-   10 CONTINUE
-   20 CONTINUE
-      M=(J/3)
-      DO 60 MM=1,100
-      M=M/3
-      IF(M.EQ.0)RETURN
-      DO 50 I=M+1,N
-      TEST=X(I)
-      J=I
-      DO 30 JJ=1,100
-      J=J-M
-      IF(J.LE.0)GOTO 40
-      IF(TEST.GE.X(J))GOTO 40
-   30 X(J+M)=X(J)
-   40 CONTINUE
-   50 X(J+M)=TEST
-   60 CONTINUE
       END
