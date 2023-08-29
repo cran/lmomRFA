@@ -22,7 +22,7 @@ Six or seven columns (4 or 5 \eqn{L}-moments) is usually
 adequate for regional frequency analysis.
 
 Note that the fourth column should contain values of
-the \eqn{L}-CV \eqn{t}, not the \eqn{L}-scale \eqn{\ell_2}{l_2}!
+the \eqn{L}-CV \eqn{t=\ell_2/\ell_1}{t=l_2/l_1}, not the \eqn{L}-scale \eqn{\ell_2}{l_2}!
 
 Objects of class \code{"regdata"} are created by \code{as.regdata},
 and by \code{regsamlmu} (with default settings of its arguments).
