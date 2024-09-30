@@ -5,7 +5,18 @@
        **************************************************
 
 
-Version 3.6    2023 Aug 29
+Version 3.8     2024 Sep 29
+
+   o   Corrected invalid URL in help file "lmomRFA-package".
+
+
+Version 3.7     2024 Sep 25
+
+   o   [invisible to users] Fortran source code from package "lmom" is now
+       copied from "lmom" version 3.1.
+
+
+Version 3.6     2023 Aug 29
 
    o   Fortran source files rearranged, to make it clear which routines are
        copied from package "lmom", now specifically "lmom" version 3.0.
@@ -18,7 +29,7 @@ Version 3.6    2023 Aug 29
    o   Documentation of "regdata" now includes definition of L-CV.
 
 
-Version 3.5    2023 Feb 19
+Version 3.5     2023 Feb 19
 
    o   New vignette "RegSim".
 

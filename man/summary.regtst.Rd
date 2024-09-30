@@ -72,7 +72,7 @@ with elements as for class \code{"regtst"}, plus the following elements:
 \examples{
 # An example from Hosking (1996).  Compare the output with
 # the file 'cascades.out' in the LMOMENTS Fortran package at
-# http://lib.stat.cmu.edu/lmoments/general (results will not
+# https://lib.stat.cmu.edu/general/lmoments (results will not
 # be identical, because random-number generators are different).
 summary(regtst(Cascades, nsim=500))
 }

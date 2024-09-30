@@ -76,7 +76,7 @@ The following functions are contained in this package.
 Functions \code{cluagg}, \code{cluinf}, \code{clukm}, \code{reglmr},
 and \code{regtst} are analogous to Fortran routines from the
 LMOMENTS package, version 3.04, available from StatLib at
-\url{http://lib.stat.cmu.edu/general/lmoments}.
+\url{https://lib.stat.cmu.edu/general/lmoments}.
 In addition, functions \code{regsimh} and \code{regsimq}
 provide similar functionality to \code{PROGRAM XSIM}
 in the LMOMENTS Fortran package.

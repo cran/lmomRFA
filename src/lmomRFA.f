@@ -16,9 +16,6 @@ C
 C  File lmomrfa-lmom.f contains the following routines, copied from
 C  package "lmom". All are called from other Fortran routines.
 C
-C    DERF
-C    DIGAMD
-C    DLGAMA
 C    LMRGEV
 C    LMRGLO
 C    LMRGNO
@@ -30,6 +27,9 @@ C    PELGNO
 C    PELGPA
 C    PELKAP
 C    PELPE3
+C    DIGAMD
+C    XERF
+C    XLGAMA
 C    SAMLM
 C
 C  Note that routine PELWAK in this package is not the same as in R
@@ -50,7 +50,7 @@ C*  Version 1.0    March 2009                                          *
 C*                                                                     *
 C*  Version 3.0    August 2023                                         *
 C*  * Code cleanup:                                                    *
-C*    - Specific names of intrinsic functions changed to generic.      *                                                        *
+C*    - Specific names of intrinsic functions changed to generic.      *
 C*    - All DO loops now end with CONTINUE.                            *
 C*                                                                     *
 C***********************************************************************
@@ -276,7 +276,7 @@ C*  * No need to call routine SORT.                                    *
 C*                                                                     *
 C*  Version 3.6    August 2023                                         *
 C*  * Code cleanup:                                                    *
-C*    - Specific names of intrinsic functions changed to generic.      *                                                        *
+C*    - Specific names of intrinsic functions changed to generic.      *
 C*    - All DO loops now end with CONTINUE.                            *
 C*    - No shared termination statements for DO loops.                 *
 C*    - Some IF constructs changed to IF-THEN(-ELSE)-ENDIF, sometimes  *
@@ -364,9 +364,9 @@ C  X      * local* Array of length MAXREC. Used as workspace.
 C  MAXREC * input* Must be at least as large as the largest of the
 C                  record lengths.
 C
-C  Other Fortran routines used: DERF,DIGAMD,DLGAMA,LMRGEV,LMRGLO,LMRGNO,
-C    LMRGPA,LMRPE3,PELGEV,PELGLO,PELGNO,PELGPA,PELKAP,PELPE3,PELWAK,
-C    QKAP,QSORT3(from R's API),SAMLM
+C  Other Fortran routines used: DIGAMD,LMRGEV,LMRGLO,LMRGNO,LMRGPA,
+C    LMRPE3,PELGEV,PELGLO,PELGNO,PELGPA,PELKAP,PELPE3,PELWAK,QKAP,
+C    QSORT3(from R's API),SAMLM,XERF,XLGAMA
 C
 C  C routines used: CURAND,RANGET,RANPUT
 C

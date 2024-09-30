@@ -635,7 +635,7 @@ regsimh<-function(qfunc, para, cor=0, nrec, nrep=500, nsim=500) {
         cor<-diag(1-avcor,nsites)+avcor
       }
       cholcor<-try(chol(cor),silent=TRUE)
-      if (inherits(cholcor,"try-error")) stop("Correlation matrix is not positive definite")
+      if (inherits(cholcor,"try-error")) stop("correlation matrix is not positive definite")
     }
 
    # Simulation loop
@@ -768,7 +768,7 @@ regsimq<-function(qfunc, para, cor=0, index=NULL, nrec, nrep=10000,
       cor<-diag(1-avcor,nsites)+avcor
     }
     cholcor<-try(chol(cor),silent=TRUE)
-    if (inherits(cholcor,"try-error")) stop("Correlation matrix is not positive definite")
+    if (inherits(cholcor,"try-error")) stop("correlation matrix is not positive definite")
   }
 #
   # Compute the index flood values if necessary
